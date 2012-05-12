@@ -12,10 +12,18 @@
 #define Project1_execute_h
 #include "Decoder.h"
 
+
+struct Executed{
+    int result;
+    bool zeroBit;
+    Decoded* decoded;
+};
+
 class Execute{
     Execute();
 public:
-    static int aluOp(Decoded* controlBits, int reg1, int reg2, bool* zeroBitResult);
+    static int aluOp(Decoded* controlBits);
+    static Executed* performExecute(Decoded* decoded);
 };
 
 #endif

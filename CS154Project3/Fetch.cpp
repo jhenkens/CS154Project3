@@ -16,6 +16,98 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <sstream>
+
+Fetched* Fetched::getControlBits(int instruction){
+    unsigned char op = (unsigned char)((instruction&0xFC000000)>>26);
+    unsigned char func = (unsigned char)((instruction&0x3F));
+    bool add = ((op==0x0)&&(func==0xA));
+	bool slt = ((op==0x0)&&(func==0xC));
+	bool sub = ((op==0x0)&&(func==0x11));
+    bool addi = (op==0xE);
+    bool xori = (op==0x14);
+    bool lw = (op==0x3);
+    bool sw = (op==0x7);
+    bool bne = (op==0x2C);
+    bool bge = (op==0x22);
+    bool jal = (op==0x24);
+    
+    
+    
+    
+    Fetched* result = new Fetched;
+    
+    if(add){
+        result->instructionName="add";
+        result->instructionType='R';
+    } else if(addi){
+        result->instructionName="addi";
+        result->instructionType='I';
+    } else if(slt){
+        result->instructionName="slt";
+        result->instructionType='R';
+    } else if(sub){
+        result->instructionName="sub";
+        result->instructionType='R';
+    } else if(xori){
+        result->instructionName="xori";
+        result->instructionType='I';
+    } else if(lw){
+        result->instructionName="lw";
+        result->instructionType='I';
+    } else if(sw){
+        result->instructionName="sw";
+        result->instructionType='I';
+    } else if(bne){
+        result->instructionName="bne";
+        result->instructionType='I';
+    } else if(bge){
+        result->instructionName="bge";
+        result->instructionType='I';
+    } else if(jal){
+        result->instructionName="jal";
+        result->instructionType='J';
+    } 
+    
+    result->op=op;
+    result->func=func;
+    result->rs=(unsigned char)((instruction>>21)&0x1F);
+    result->rt=(unsigned char)((instruction>>16)&0x1F);
+    result->rd=(unsigned char)((instruction>>11)&0x1F);
+    
+    //sign extension
+    result->immi=((instruction>>15)&0x1)?(0xFFFF0000||(instruction&0xFFFF)):(0x00000000||(instruction&0xFFFF));
+    result->jumpAddr=((instruction&0x3FFFFFF));
+    
+    result->memWr = sw;
+	result->memToReg = lw;
+	result->memRd = lw;
+	result->aluSrc = (sw||lw||xori||addi);
+	result->bType = ((bne||bge)<<1);
+	result->bType+= (bne||jal);
+	
+	result->regDest = (add||slt||sub);
+	result->regWr = (addi||xori||add||slt||sub||lw||jal);
+	
+	result->aluOp = ((xori||slt||bne||bge)<<2);
+	result->aluOp+= ((addi||add||slt||sub||lw||sw||bge||jal)<<1);
+	result->aluOp+= (xori||sub||bne);
+    
+    std::stringstream ss;
+    switch(result->instructionType){
+            case 'J':
+            ss<<result->instructionName<<" "<<result->jumpAddr;
+            break;
+            case 'I':
+            ss<<result->instructionName<<" $"<<result->rt<<", $"<<result->rs<<", "<<result->immi;
+            break;
+            case 'R':
+            ss<<result->instructionName<<" $"<<result->rd<<", $"<<result->rs<<", $"<<result->rt;
+            break;            
+    }
+    result->printString=ss.str();
+    return result;
+}
 
 Fetch::Fetch(char* filename){
     std::vector<int> instructionsVect;
@@ -37,7 +129,7 @@ Fetch::Fetch(char* filename){
     pc = 0;
 }
 
-void Fetch::updatePC(Decoded* controlBits, bool zeroBit){
+void Fetch::updatePC(Fetched* controlBits, bool zeroBit){
     switch (controlBits->bType) {
         case 0:
             pc=getPCPlus4();
@@ -83,8 +175,10 @@ bool Fetch::isDone(){
     return pc>=maxPC;
 }
 
-int Fetch::performFetch(){
-    int result = (this->isDone())?0:pc;
-    return result;
+Fetched* Fetch::performFetch(){
+    int instruction = (this->isDone())?0:pc;
+    Fetched* brokenDown = Fetched::getControlBits(instruction);
+    std::cout<<"Fetch instruction: "<<brokenDown->printString<<std::endl;
+    return brokenDown;
 }
 

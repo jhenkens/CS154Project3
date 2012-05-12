@@ -11,7 +11,10 @@
 #include <iostream>
 #include "Execute.h"
 
-int Execute::aluOp(Decoded* controlBits, int reg1, int reg2, bool* zeroBitResult){
+int Execute::aluOp(Decoded* decoded){
+    Fetched* controlBits= decoded->fetched;
+    int reg1 = decoded->read1;
+    int reg2 = decoded->read2;
     int a2=(controlBits->aluSrc)?controlBits->immi:reg2;
     int a1=reg1;
     int result;
@@ -41,7 +44,18 @@ int Execute::aluOp(Decoded* controlBits, int reg1, int reg2, bool* zeroBitResult
         default:
             break;
     }
-    (*zeroBitResult) = (result)?0:1;
     return result;
 }
 
+Executed* Execute::performExecute(Decoded* decoded){
+    if(decoded==0){
+        std::cout<<"Execute instruction: "<<std::endl;
+        return 0;
+    }
+    Executed* executed = new Executed;
+    std::cout<<"Execute instruction: "<<decoded->fetched->printString<<std::endl;
+    executed->decoded=decoded;
+    executed->result=aluOp(decoded);
+    executed->zeroBit=(executed->result)?0:1;
+    return executed;
+}

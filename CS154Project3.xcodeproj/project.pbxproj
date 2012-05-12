@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D4FC64FB155E07BD00CD7E9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4FC64FA155E07BD00CD7E9E /* main.cpp */; };
+		9EC5DBF9155F291E0041A05D /* WriteBack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EC5DBF8155F291E0041A05D /* WriteBack.cpp */; };
 		D4FC64FD155E07BD00CD7E9E /* CS154Project3.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4FC64FC155E07BD00CD7E9E /* CS154Project3.1 */; };
 		D4FC6508155E157000CD7E9E /* Decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4FC6507155E157000CD7E9E /* Decoder.cpp */; };
 		D4FC650B155E255800CD7E9E /* Fetch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4FC650A155E255800CD7E9E /* Fetch.cpp */; };
@@ -30,9 +30,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9EC5DBF8155F291E0041A05D /* WriteBack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WriteBack.cpp; sourceTree = "<group>"; };
+		9EC5DBFB155F29250041A05D /* WriteBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WriteBack.h; sourceTree = "<group>"; };
 		D47EE955155E2FC7005B62A1 /* driver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = driver.h; sourceTree = "<group>"; };
 		D4FC64F6155E07BD00CD7E9E /* CS154Project3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CS154Project3; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4FC64FA155E07BD00CD7E9E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D4FC64FC155E07BD00CD7E9E /* CS154Project3.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CS154Project3.1; sourceTree = "<group>"; };
 		D4FC6507155E157000CD7E9E /* Decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Decoder.cpp; sourceTree = "<group>"; };
 		D4FC6509155E15DD00CD7E9E /* Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Decoder.h; sourceTree = "<group>"; };
@@ -75,7 +76,6 @@
 		D4FC64F9155E07BD00CD7E9E /* CS154Project3 */ = {
 			isa = PBXGroup;
 			children = (
-				D4FC64FA155E07BD00CD7E9E /* main.cpp */,
 				D4FC6513155E280800CD7E9E /* driver.cpp */,
 				D4FC650A155E255800CD7E9E /* Fetch.cpp */,
 				D4FC650C155E256000CD7E9E /* Fetch.h */,
@@ -87,6 +87,8 @@
 				D4FC6510155E27BA00CD7E9E /* Execute.h */,
 				D4FC6509155E15DD00CD7E9E /* Decoder.h */,
 				D4FC64FC155E07BD00CD7E9E /* CS154Project3.1 */,
+				9EC5DBF8155F291E0041A05D /* WriteBack.cpp */,
+				9EC5DBFB155F29250041A05D /* WriteBack.h */,
 			);
 			path = CS154Project3;
 			sourceTree = "<group>";
@@ -141,12 +143,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4FC64FB155E07BD00CD7E9E /* main.cpp in Sources */,
 				D4FC6508155E157000CD7E9E /* Decoder.cpp in Sources */,
 				D4FC650B155E255800CD7E9E /* Fetch.cpp in Sources */,
 				D4FC650F155E278C00CD7E9E /* Memory.cpp in Sources */,
 				D4FC6512155E27CE00CD7E9E /* Execute.cpp in Sources */,
 				D4FC6514155E280800CD7E9E /* driver.cpp in Sources */,
+				9EC5DBF9155F291E0041A05D /* WriteBack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

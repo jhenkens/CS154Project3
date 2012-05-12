@@ -27,7 +27,10 @@ void Memory::setMemory(unsigned short addr, int data){
     ram[addr>>2] = data;
 }
 
-int Memory::getMemoryOutput(int addr, int input,  Decoded* controlBits){
+int Memory::getMemoryOutput(Executed* exec){
+    int addr = exec->result;
+    int input = exec->decoded->read2;
+    Fetched* controlBits = exec->decoded->fetched;
     assert(!(controlBits->memWr&&controlBits->memRd));
     if(controlBits->memWr){
         setMemory((unsigned short) addr,input);
@@ -37,4 +40,16 @@ int Memory::getMemoryOutput(int addr, int input,  Decoded* controlBits){
     } else{
         return 0;
     }
+}
+
+Memoried* Memory::performMemory(Executed* exec){
+    if(exec==0){
+        std::cout<<"Executed instruction: "<<std::endl;
+        return 0;
+    }
+    Memoried* mem = new Memoried;
+    std::cout<<"Memory instruction: "<<exec->decoded->fetched->printString<<std::endl;
+    mem->executed=exec;
+    mem->read=getMemoryOutput(exec);
+    return mem;
 }

@@ -10,7 +10,37 @@
 
 #ifndef Project1_fetch_h
 #define Project1_fetch_h
-#include "Decoder.h"
+
+struct Fetched{
+    unsigned char op;
+    unsigned char func;
+    
+    unsigned char rt;
+    unsigned char rs;
+    unsigned char rd;
+    
+    std::string instructionName;
+    std::string printString;
+    char instructionType;
+    
+    int immi;
+    int jumpAddr;
+    
+    bool memWr;
+    bool memToReg;
+    bool memRd;
+    bool aluSrc;
+    
+    char bType;
+    
+    bool regDest;
+    bool regWr;
+    
+    char aluOp;
+    static Fetched* getControlBits(int);
+    int instruction;
+};
+
 class Fetch{
     int* instructions;
     unsigned int pc;
@@ -22,8 +52,8 @@ public:
     int programLength();
     unsigned int getPC();
     unsigned int getPCPlus4();
-    void updatePC(Decoded* controlBits, bool zeroBit);
-    int performFetch();
+    void updatePC(Fetched* controlBits, bool zeroBit);
+    Fetched* performFetch();
     bool isDone();
 };
 

@@ -10,9 +10,8 @@
 
 #ifndef Project1_driver_h
 #define Project1_driver_h
+#include "WriteBack.h"
 
-void printInstruction(int);
-void printControlBits(unsigned short bits);
-void printMemResult(unsigned short controlBits, int memoryRead);
+bool notEqualToZero(Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem);
 
 #endif

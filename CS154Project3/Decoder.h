@@ -9,32 +9,12 @@
 #ifndef CS154Project3_decoder_h
 #define CS154Project3_decoder_h
 #include <string>
+#include "Fetch.h"
+
 struct Decoded{
-    unsigned char op;
-    unsigned char func;
-    
-    unsigned char rt;
-    unsigned char rs;
-    unsigned char rd;
-    
-    std::string instruction;
-    char instructionType;
-    
-    int immi;
-    int jumpAddr;
-    
-    bool memWr;
-    bool memToReg;
-    bool memRd;
-    bool aluSrc;
-    
-    char bType;
-    
-    bool regDest;
-    bool regWr;
-    
-    char aluOp;
-    static Decoded* getControlBits(int);
+    Fetched* fetched;
+    int read1;
+    int read2;
 };
 
 class RegFile{
@@ -44,8 +24,8 @@ public:
     RegFile();
     int getRegister(unsigned char);
     void setRegister(unsigned char, int value);
-    void writeBack( Decoded* controlBits,int aluInput, int memInput,int pcPlus4);
     void printRegisters();
+    Decoded* performDecode(Fetched* fetched);
 };
 
 

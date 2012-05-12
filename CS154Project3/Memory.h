@@ -10,7 +10,12 @@
 
 #ifndef Project1_memory_h
 #define Project1_memory_h
-#include "Decoder.h"
+#include "Execute.h"
+
+struct Memoried{
+    Executed* executed;
+    int read;
+};
 
 class Memory{
     int* ram;
@@ -18,7 +23,8 @@ public:
     Memory();
     int getMemory(unsigned short);
     void setMemory(unsigned short,int data);
-    int getMemoryOutput(int addr, int input,  Decoded* controlBits);
+    int getMemoryOutput(Executed* exec);
+    Memoried* performMemory(Executed* exec);
 };
 
 

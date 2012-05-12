@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D4FC64FB155E07BD00CD7E9E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4FC64FA155E07BD00CD7E9E /* main.cpp */; };
 		D4FC64FD155E07BD00CD7E9E /* CS154Project3.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = D4FC64FC155E07BD00CD7E9E /* CS154Project3.1 */; };
+		D4FC6508155E157000CD7E9E /* decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4FC6507155E157000CD7E9E /* decoder.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		D4FC64F6155E07BD00CD7E9E /* CS154Project3 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CS154Project3; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4FC64FA155E07BD00CD7E9E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D4FC64FC155E07BD00CD7E9E /* CS154Project3.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CS154Project3.1; sourceTree = "<group>"; };
+		D4FC6507155E157000CD7E9E /* decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = decoder.cpp; sourceTree = "<group>"; };
+		D4FC6509155E15DD00CD7E9E /* decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = decoder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,8 @@
 			isa = PBXGroup;
 			children = (
 				D4FC64FA155E07BD00CD7E9E /* main.cpp */,
+				D4FC6507155E157000CD7E9E /* decoder.cpp */,
+				D4FC6509155E15DD00CD7E9E /* decoder.h */,
 				D4FC64FC155E07BD00CD7E9E /* CS154Project3.1 */,
 			);
 			path = CS154Project3;
@@ -117,6 +122,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4FC64FB155E07BD00CD7E9E /* main.cpp in Sources */,
+				D4FC6508155E157000CD7E9E /* decoder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

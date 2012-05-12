@@ -12,12 +12,12 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include "fetch.h"
+#include "Fetch.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
-fetch::fetch(char* filename){
+Fetch::Fetch(char* filename){
     std::vector<int> instructionsVect;
     std::ifstream file;
     file.open(filename);
@@ -36,24 +36,25 @@ fetch::fetch(char* filename){
     pc = 0;
 }
 
-void fetch::setPCWithInfo(unsigned short controlBits, bool zeroBit, short offset, int jumpAddress){
-    switch (((controlBits>>2)&0b11)) {
-        case 0b00:
+void Fetch::updatePC(Decoded* controlBits, bool zeroBit){
+    switch (controlBits->bType) {
+        case 0:
+            pc=getPCPlus4();
             return;
-        case 0b01:
+        case 1:
             //Jump
-            pc=jumpAddress*4;
+            pc=controlBits->jumpAddr*4;
             break;
-        case 0b10:
+        case 2:
             //BGE
             if(zeroBit){
-                pc+=4*offset;
+                pc+=4*controlBits->immi;
             }
             break;
-        case 0b11:
+        case 3:
             //BNE
             if(!zeroBit){
-                pc+=4*offset;
+                pc+=4*controlBits->immi;
             }
             break;
         default:
@@ -61,16 +62,18 @@ void fetch::setPCWithInfo(unsigned short controlBits, bool zeroBit, short offset
     }
 }
 
-int fetch::nextInstruction(){
+int Fetch::nextInstruction(){
     int result = instructions[pc>>2];
-    pc+=4;
     return result;
 }
 
-int fetch::programLength(){
+int Fetch::programLength(){
     return length;
 }
 
-unsigned int fetch::getPC(){
+unsigned int Fetch::getPC(){
     return pc;
+}
+unsigned int Fetch::getPCPlus4(){
+    return pc+4;
 }

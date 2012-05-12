@@ -8,7 +8,8 @@
 
 #ifndef CS154Project3_decoder_h
 #define CS154Project3_decoder_h
-struct decoded{
+#include <string>
+struct Decoded{
     unsigned char op;
     unsigned char func;
     
@@ -16,8 +17,11 @@ struct decoded{
     unsigned char rs;
     unsigned char rd;
     
-    char immi;
-    char jumpAddr;
+    std::string instruction;
+    char instructionType;
+    
+    int immi;
+    int jumpAddr;
     
     bool memWr;
     bool memToReg;
@@ -30,18 +34,17 @@ struct decoded{
     bool regWr;
     
     char aluOp;
-    static decoded* getControlBits(int);
+    static Decoded* getControlBits(int);
 };
 
-class regFile{
+class RegFile{
     int* registers;
 public:
     unsigned short getControlBits(int);
-    reGfile();
+    RegFile();
     int getRegister(unsigned char);
     void setRegister(unsigned char, int value);
-    int getRegister(char reg);
-    void writeBack(int aluInput, int memInput, int instruction, int controlBits,int pc);
+    void writeBack( Decoded* controlBits,int aluInput, int memInput,int pcPlus4);
     void printRegisters();
 };
 

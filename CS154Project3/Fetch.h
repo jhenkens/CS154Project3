@@ -10,17 +10,18 @@
 
 #ifndef Project1_fetch_h
 #define Project1_fetch_h
-class fetch{
+#include "Decoder.h"
+class Fetch{
     int* instructions;
     unsigned int pc;
     unsigned int length;
 public:
-    fetch(char*);
+    Fetch(char*);
     int nextInstruction();
     int programLength();
     unsigned int getPC();
-    void setPCWithInfo(unsigned short controlBits, bool zeroBit, short offset, int jumpAddress);
-
+    unsigned int getPCPlus4();
+    void updatePC(Decoded* controlBits, bool zeroBit);
 };
 
 

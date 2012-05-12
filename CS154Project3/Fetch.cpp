@@ -29,6 +29,7 @@ Fetch::Fetch(char* filename){
     }
     file.close();
     length = (unsigned int) instructionsVect.size();
+    maxPC = length*4;
     instructions = new int[length];
     for(int i = 0; i < length;i++){
         instructions[i]=instructionsVect[i];
@@ -77,3 +78,13 @@ unsigned int Fetch::getPC(){
 unsigned int Fetch::getPCPlus4(){
     return pc+4;
 }
+
+bool Fetch::isDone(){
+    return pc>=maxPC;
+}
+
+int Fetch::performFetch(){
+    int result = (this->isDone())?0:pc;
+    return result;
+}
+

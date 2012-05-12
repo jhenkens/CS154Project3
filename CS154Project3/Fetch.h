@@ -14,6 +14,7 @@
 class Fetch{
     int* instructions;
     unsigned int pc;
+    unsigned int maxPC;
     unsigned int length;
 public:
     Fetch(char*);
@@ -22,6 +23,8 @@ public:
     unsigned int getPC();
     unsigned int getPCPlus4();
     void updatePC(Decoded* controlBits, bool zeroBit);
+    int performFetch();
+    bool isDone();
 };
 
 

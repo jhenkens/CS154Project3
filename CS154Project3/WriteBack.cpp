@@ -8,13 +8,14 @@
 
 #include <iostream>
 #include "WriteBack.h"
-void WriteBack::performWriteBack(RegFile* reg, Memoried* mem){
+#include <sstream>
+std::string WriteBack::performWriteBack(RegFile* reg, Memoried* mem){
     if(mem==0){
-        std::cout<<"WriteBack instruction: "<<std::endl;
-        return;
+        return "WriteBack instruction: ";
     }
     Fetched* controlBits = mem->executed->decoded->fetched;
-    std::cout<<"WriteBack instruction: "<<controlBits->printString<<std::endl;
+    std::stringstream ss;
+    ss<<"WriteBack instruction: "<<controlBits->printString;
     if(controlBits->regWr){
         if(controlBits->bType==1) reg->setRegister(31,0); // TO DO - HANDLE PCPLUS4 WRITE?! instead of 0
         else{ 
@@ -23,4 +24,5 @@ void WriteBack::performWriteBack(RegFile* reg, Memoried* mem){
             reg->setRegister(destReg,writeData);
         }
     }
+    return ss.str();
 }

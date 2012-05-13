@@ -48,7 +48,7 @@ int Memory::getMemoryOutput(Executed* exec){
 
 Memoried* Memory::performMemory(Executed* exec){
     if(exec==0){
-        std::cout<<"Executed instruction: "<<std::endl;
+        std::cout<<"Memory instruction: "<<std::endl;
         return 0;
     }
     Memoried* mem = new Memoried;

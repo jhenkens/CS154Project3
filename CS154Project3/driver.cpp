@@ -65,7 +65,9 @@ int main(int argc, char * argv[])
         
         cout<<"Cycle "<<i<<":"<<endl;
         Fetched* instr = instMem->performFetch();
-
+        
+        string wbRes = WriteBack::performWriteBack(reg, prevMem);
+        
         Decoded* decoded = reg->performDecode(prevInstruction);
         prevInstruction=instr;
         
@@ -75,7 +77,7 @@ int main(int argc, char * argv[])
         Memoried* memoried = mem->performMemory(prevExecute);
         prevExecute = execute;
         
-        WriteBack::performWriteBack(reg, prevMem);
+        cout<<wbRes<<endl;
         delete prevMem;
         prevMem = memoried;
         

@@ -1,5 +1,5 @@
 //
-//  WriteBack.h
+//  Memoried.cpp
 //  CS154Project3
 //
 //  Created by Johan Henkens on 5/12/12.
@@ -8,15 +8,10 @@
 //  Project 3 - Johan Henkens, Jay Mutarevic, Charlotte Hill
 //
 
-#ifndef CS154Project3_WriteBack_h
-#define CS154Project3_WriteBack_h
+#include <iostream>
 #include "Memoried.h"
-#include "Decoder.h"
 
-class WriteBack{
-public:
-    static std::string performWriteBack(RegFile* reg, Memoried* mem);
-    
-};
+Memoried::~Memoried(){
+    delete executed;
+}
 
-#endif

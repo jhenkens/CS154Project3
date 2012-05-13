@@ -41,8 +41,10 @@
 #include <vector>
 #include <string>
 #include "driver.h"
+#include "Decoder.h"
+#include "Memory.h"
+#include "WriteBack.h"
 
-#define TEST
 using namespace std;
 
 
@@ -71,7 +73,7 @@ int main(int argc, char * argv[])
         Decoded* decoded = reg->performDecode(prevInstruction);
         prevInstruction=instr;
         
-        Executed* execute = Execute::performExecute(prevDecode);
+        Executed* execute = Execute::performExecute(prevDecode,prevExecute,prevMem,0);
         prevDecode = decoded;
         
         Memoried* memoried = mem->performMemory(prevExecute);

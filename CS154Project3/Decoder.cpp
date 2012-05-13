@@ -1,18 +1,16 @@
 //
-//  decoder.cpp
+//  Decoder.cpp
 //  CS154Project3
 //
-//  Created by Johan Henkens on 5/11/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Johan Henkens on 5/12/12.
+//  Copyright (c) 2012. All rights reserved.
+//  For CS154 UCSB Spring 2012
+//  Project 3 - Johan Henkens, Jay Mutarevic, Charlotte Hill
 //
 
 #include <iostream>
 #include <assert.h>
 #include "Decoder.h"
-
-Decoded::~Decoded(){
-    delete fetched;
-}
 
 RegFile::RegFile(){
     registers = new int[32];

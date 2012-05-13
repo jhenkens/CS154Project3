@@ -2,13 +2,16 @@
 //  WriteBack.cpp
 //  CS154Project3
 //
-//  Created by Charlotte Hill on 5/12/12.
-//  Copyright 2012 __MyCompanyName__. All rights reserved.
+//  Created by Johan Henkens on 5/12/12.
+//  Copyright (c) 2012. All rights reserved.
+//  For CS154 UCSB Spring 2012
+//  Project 3 - Johan Henkens, Jay Mutarevic, Charlotte Hill
 //
 
 #include <iostream>
 #include "WriteBack.h"
 #include <sstream>
+
 std::string WriteBack::performWriteBack(RegFile* reg, Memoried* mem){
     if(mem==0){
         return "WriteBack instruction: ";

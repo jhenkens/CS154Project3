@@ -1,30 +1,24 @@
 //
-//  execute.h
-//  Project1
+//  Execute.h
+//  CS154Project3
 //
-//  Created by Johan Henkens on 4/17/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Johan Henkens on 5/12/12.
+//  Copyright (c) 2012. All rights reserved.
 //  For CS154 UCSB Spring 2012
-//  Project 1 - Johan Henkens, Jay Mutarevic, Charlotte Hill
+//  Project 3 - Johan Henkens, Jay Mutarevic, Charlotte Hill
 //
 
 #ifndef Project1_execute_h
 #define Project1_execute_h
 #include "Decoder.h"
-
-
-struct Executed{
-    int result;
-    bool zeroBit;
-    Decoded* decoded;
-    ~Executed();
-};
+#include "Executed.h"
+#include "Memoried.h"
 
 class Execute{
     Execute();
 public:
-    static int aluOp(Decoded* controlBits);
-    static Executed* performExecute(Decoded* decoded);
+    static int aluOp(Decoded* controlBits, int forwardedData,char forwardLocation);
+    static Executed* performExecute(Decoded* decoded, Executed* prevExec, Memoried* prevMem, char forwardingContol);
 };
 
 #endif

@@ -10,7 +10,8 @@
 
 #ifndef Project1_driver_h
 #define Project1_driver_h
-#include "WriteBack.h"
+#include "Fetch.h"
+#include "Memoried.h"
 
 
 bool shouldContinue(Fetch* instMem, Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem);

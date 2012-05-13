@@ -1,11 +1,11 @@
 //
-//  memory.cpp
-//  Project1
+//  Memory.cpp
+//  CS154Project3
 //
-//  Created by Johan Henkens on 4/17/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Johan Henkens on 5/12/12.
+//  Copyright (c) 2012. All rights reserved.
 //  For CS154 UCSB Spring 2012
-//  Project 1 - Johan Henkens, Jay Mutarevic, Charlotte Hill
+//  Project 3 - Johan Henkens, Jay Mutarevic, Charlotte Hill
 //
 
 #include <iostream>
@@ -17,9 +17,6 @@ Memory::Memory(){
     for(int i = 0; i<256;i++)ram[i]=0;
 }
 
-Memoried::~Memoried(){
-    delete executed;
-}
 
 int Memory::getMemory(unsigned short addr){
     assert(addr>=0 && addr<1024);

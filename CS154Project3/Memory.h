@@ -1,22 +1,18 @@
 //
-//  memory.h
-//  Project1
+//  Memory.h
+//  CS154Project3
 //
-//  Created by Johan Henkens on 4/17/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Johan Henkens on 5/12/12.
+//  Copyright (c) 2012. All rights reserved.
 //  For CS154 UCSB Spring 2012
-//  Project 1 - Johan Henkens, Jay Mutarevic, Charlotte Hill
+//  Project 3 - Johan Henkens, Jay Mutarevic, Charlotte Hill
 //
 
 #ifndef Project1_memory_h
 #define Project1_memory_h
 #include "Execute.h"
+#include "Memoried.h"
 
-struct Memoried{
-    Executed* executed;
-    ~Memoried();
-    int read;
-};
 
 class Memory{
     int* ram;

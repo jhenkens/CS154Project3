@@ -59,7 +59,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-file test1.txt"
+            argument = "-file test2a.txt"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

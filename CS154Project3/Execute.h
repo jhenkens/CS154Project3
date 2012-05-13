@@ -14,11 +14,16 @@
 #include "Executed.h"
 #include "Memoried.h"
 
+#define NEITHER 0
+#define TOP 1
+#define BOTTOM 2
+#define BOTH 3
+
 class Execute{
     Execute();
 public:
-    static int aluOp(Decoded* controlBits, int forwardedData,char forwardLocation);
-    static Executed* performExecute(Decoded* decoded, Executed* prevExec, Memoried* prevMem, char forwardingContol);
+    static int aluOp(Decoded* decoded);
+    static Executed* performExecute(Decoded* decoded, Executed* prevExec, Memoried* prevMem);
 };
 
 #endif

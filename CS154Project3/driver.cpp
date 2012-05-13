@@ -7,31 +7,6 @@
 //  For CS154 UCSB Spring 2012
 //  Project 1 - Johan Henkens, Jay Mutarevic, Charlotte Hill
 
-/*
- Question for TA:
- JAL: What register is $ra? is it register 31? - it is register 31  
- JAL: ALU OP? does it matter?
- 
- BGE: Branch Greater than or Equal? Use ALUop slt?
- 
- What do you do for the ALU 'not' operator? - I think it was answeres in piazza - invert first word
- 
- 
- Is it OK that writeback is in the same class as decoder? It is pretty much just our registry IO class
- Is it OK that branch support is just in our fetch class?
- For decoder, is what we did alright? read two registers in separate instructions, store in ints
- 
- For branching/jumping support, do we have to only use the zerobit from the ALUResult? This messing things up with xor and sub, only works with slt
- 
- Ask Prof:
- For BNE - should we use sub or xor? if we use XOR, then both BNE and BGE branch of aluresult ==0
- If we use sub or xor, it would change the ALUop value in the printout, even if the result was the same
-
- 
- 
- 
- */
-//
 
 #include <iostream>
 #include <cstdio>
@@ -73,7 +48,7 @@ int main(int argc, char * argv[])
         Decoded* decoded = reg->performDecode(prevInstruction);
         prevInstruction=instr;
         
-        Executed* execute = Execute::performExecute(prevDecode,prevExecute,prevMem,0);
+        Executed* execute = Execute::performExecute(prevDecode,prevExecute,prevMem);
         prevDecode = decoded;
         
         Memoried* memoried = mem->performMemory(prevExecute);

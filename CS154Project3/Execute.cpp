@@ -11,6 +11,10 @@
 #include <iostream>
 #include "Execute.h"
 
+Executed::~Executed(){
+    delete decoded;
+}
+
 int Execute::aluOp(Decoded* decoded){
     Fetched* controlBits= decoded->fetched;
     int reg1 = decoded->read1;

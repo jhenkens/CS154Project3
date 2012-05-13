@@ -12,6 +12,7 @@
 #define Project1_driver_h
 #include "WriteBack.h"
 
-bool notEqualToZero(Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem);
+
+bool shouldContinue(Fetch* instMem, Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem);
 
 #endif

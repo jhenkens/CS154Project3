@@ -17,6 +17,7 @@ struct Executed{
     int result;
     bool zeroBit;
     Decoded* decoded;
+    ~Executed();
 };
 
 class Execute{

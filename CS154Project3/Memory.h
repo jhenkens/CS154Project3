@@ -14,6 +14,7 @@
 
 struct Memoried{
     Executed* executed;
+    ~Memoried();
     int read;
 };
 

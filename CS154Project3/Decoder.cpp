@@ -10,6 +10,9 @@
 #include <assert.h>
 #include "Decoder.h"
 
+Decoded::~Decoded(){
+    delete fetched;
+}
 
 RegFile::RegFile(){
     registers = new int[32];

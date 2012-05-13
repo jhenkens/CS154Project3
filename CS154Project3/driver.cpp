@@ -61,7 +61,7 @@ int main(int argc, char * argv[])
     Decoded* prevDecode=0;
     Executed* prevExecute=0;
     Memoried* prevMem=0;
-    for(i = 0; !instMem->isDone() || notEqualToZero(prevInstruction, prevDecode, prevExecute, prevMem);i++){
+    for(i = 0; shouldContinue(instMem,prevInstruction, prevDecode, prevExecute, prevMem);i++){
         
         cout<<"Cycle "<<i<<":"<<endl;
         Fetched* instr = instMem->performFetch();
@@ -76,6 +76,7 @@ int main(int argc, char * argv[])
         prevExecute = execute;
         
         WriteBack::performWriteBack(reg, prevMem);
+        delete prevMem;
         prevMem = memoried;
         
         reg->printRegisters();
@@ -83,9 +84,13 @@ int main(int argc, char * argv[])
 
     }
     
+    cout<<"Cycles: "<<i<<endl;
+    cout<<"Instructions executed: "<<instMem->programLength()<<endl;
+    
     return 0;
 }
 
-bool notEqualToZero(Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem){
-    return ((instr!=0)||(dec!=0)||(exec!=0)||(mem!=0));
+bool shouldContinue(Fetch* instMem, Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem){
+    bool done = instMem->isDone();
+    return ((!done)||(instr!=0)||(dec!=0)||(exec!=0)||(mem!=0));
 }

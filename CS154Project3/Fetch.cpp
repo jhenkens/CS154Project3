@@ -76,7 +76,11 @@ Fetched* Fetched::getControlBits(int instruction){
     result->rd=(unsigned char)((instruction>>11)&0x1F);
     
     //sign extension
-    result->immi=((instruction>>15)&0x1)?(0xFFFF0000||(instruction&0xFFFF)):(0x00000000||(instruction&0xFFFF));
+    if((instruction>>15)&0x1){
+        result->immi=(0xFFFF0000||(instruction&0xFFFF));
+    } else{
+        result->immi=(instruction&0xFFFF);
+    }
     result->jumpAddr=((instruction&0x3FFFFFF));
     
     result->memWr = sw;
@@ -93,16 +97,18 @@ Fetched* Fetched::getControlBits(int instruction){
 	result->aluOp+= ((addi||add||slt||sub||lw||sw||bge||jal)<<1);
 	result->aluOp+= (xori||sub||bne);
     
+    result->instruction=instruction;
+    
     std::stringstream ss;
     switch(result->instructionType){
             case 'J':
             ss<<result->instructionName<<" "<<result->jumpAddr;
             break;
             case 'I':
-            ss<<result->instructionName<<" $"<<result->rt<<", $"<<result->rs<<", "<<result->immi;
+            ss<<result->instructionName<<" $"<<((short)result->rt)<<", $"<<((short)result->rs)<<", "<<result->immi;
             break;
             case 'R':
-            ss<<result->instructionName<<" $"<<result->rd<<", $"<<result->rs<<", $"<<result->rt;
+            ss<<result->instructionName<<" $"<<((short)result->rd)<<", $"<<((short)result->rs)<<", $"<<((short)result->rt);
             break;            
     }
     result->printString=ss.str();
@@ -130,6 +136,10 @@ Fetch::Fetch(char* filename){
 }
 
 void Fetch::updatePC(Fetched* controlBits, bool zeroBit){
+    if(controlBits==0){
+        pc=getPCPlus4();
+        return;
+    }
     switch (controlBits->bType) {
         case 0:
             pc=getPCPlus4();
@@ -156,8 +166,7 @@ void Fetch::updatePC(Fetched* controlBits, bool zeroBit){
 }
 
 int Fetch::nextInstruction(){
-    int result = instructions[pc>>2];
-    return result;
+    return instructions[pc>>2];
 }
 
 int Fetch::programLength(){
@@ -176,8 +185,11 @@ bool Fetch::isDone(){
 }
 
 Fetched* Fetch::performFetch(){
-    int instruction = (this->isDone())?0:pc;
-    Fetched* brokenDown = Fetched::getControlBits(instruction);
+    if(isDone()){
+        std::cout<<"Fetch instruction: "<<std::endl;
+        return 0;
+    }
+    Fetched* brokenDown = Fetched::getControlBits(nextInstruction());
     std::cout<<"Fetch instruction: "<<brokenDown->printString<<std::endl;
     return brokenDown;
 }

@@ -13,6 +13,7 @@
 
 struct Decoded{
     Fetched* fetched;
+    ~Decoded();
     int read1;
     int read2;
 };

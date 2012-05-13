@@ -17,6 +17,10 @@ Memory::Memory(){
     for(int i = 0; i<256;i++)ram[i]=0;
 }
 
+Memoried::~Memoried(){
+    delete executed;
+}
+
 int Memory::getMemory(unsigned short addr){
     assert(addr>=0 && addr<1024);
     return ram[addr>>2];

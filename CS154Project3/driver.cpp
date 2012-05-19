@@ -45,21 +45,41 @@ int main(int argc, char * argv[])
         
         string wbRes = WriteBack::performWriteBack(reg, prevMem);
         
-        Decoded* decoded = reg->performDecode(prevInstruction);
-        prevInstruction=instr;
+        Decoded* decoded = reg->performDecode(prevInstruction, prevDecode);
         
         Executed* execute = Execute::performExecute(prevDecode,prevExecute,prevMem);
-        prevDecode = decoded;
         
-        Memoried* memoried = mem->performMemory(prevExecute);
-        prevExecute = execute;
+        Memoried* memoried = mem->performMemory(prevExecute,prevMem);
         
         cout<<wbRes<<endl;
-        delete prevMem;
-        prevMem = memoried;
         
         reg->printRegisters();
-        instMem->updatePC(instr, 0);
+        if(decoded!=0&&decoded->stall){
+            delete instr;
+            decoded->fetched=0;
+            delete decoded;
+            prevDecode = 0;
+            prevExecute=execute;
+            delete prevMem;
+            prevMem=memoried;
+        } if(decoded!=0 && decoded->branch){
+            delete instr;
+            prevInstruction=0;
+            prevDecode = decoded;
+            prevExecute = execute;
+            
+            instMem->updatePC(true,false,(decoded->fetched->immi)<<2,0);
+            delete prevMem;
+            prevMem = memoried;
+        } else{
+            prevInstruction=instr;
+            prevDecode = decoded;
+            prevExecute = execute;
+            
+            instMem->updatePC(false,false,0,0);
+            delete prevMem;
+            prevMem = memoried;
+        }
 
     }
     

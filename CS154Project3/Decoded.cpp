@@ -12,5 +12,5 @@
 #include "Decoded.h"
 
 Decoded::~Decoded(){
-    delete fetched;
+    if(fetched!=0) delete fetched;
 }

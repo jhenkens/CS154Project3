@@ -43,7 +43,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Volumes/Home/johanhenkens/Documents/VC Repositories/CS154Project3"
+      customWorkingDirectory = "/Volumes/Home/johanhenkens/Documents/Dropbox/Shared Folders/csil"
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
@@ -59,7 +59,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-file test2a.txt"
+            argument = "-file test.txt"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

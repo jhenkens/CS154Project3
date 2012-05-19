@@ -12,5 +12,5 @@
 #include "Executed.h"   
 
 Executed::~Executed(){
-    delete decoded;
+    if(decoded!=0) delete decoded;
 }

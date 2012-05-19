@@ -12,6 +12,6 @@
 #include "Memoried.h"
 
 Memoried::~Memoried(){
-    delete executed;
+    if(executed!=0) delete executed;
 }
 

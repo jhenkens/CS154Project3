@@ -38,33 +38,13 @@ Fetch::Fetch(char* filename){
     pc = 0;
 }
 
-void Fetch::updatePC(Fetched* controlBits, bool zeroBit){
-    if(controlBits==0){
+void Fetch::updatePC(bool branch, bool jump, short branchOffset, int jumpAddr){
+    if(branch){
+        pc+=branchOffset;
+    } else if(jump){
+        pc=jumpAddr;
+    } else {
         pc=getPCPlus4();
-        return;
-    }
-    switch (controlBits->bType) {
-        case 0:
-            pc=getPCPlus4();
-            return;
-        case 1:
-            //Jump
-            pc=controlBits->jumpAddr*4;
-            break;
-        case 2:
-            //BGE
-            if(zeroBit){
-                pc+=4*controlBits->immi;
-            }
-            break;
-        case 3:
-            //BNE
-            if(!zeroBit){
-                pc+=4*controlBits->immi;
-            }
-            break;
-        default:
-            break;
     }
 }
 

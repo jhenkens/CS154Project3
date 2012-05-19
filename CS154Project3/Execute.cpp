@@ -18,8 +18,6 @@ int Execute::aluOp(Decoded* decoded){
     int reg2 = decoded->read2;
     int a1=reg1;
     int a2=(controlBits->aluSrc)?controlBits->immi:reg2;
-//    int a1 = forwardControl1?forwardedData1:b1;
-//    int a2 = forwardControl2?forwardedData2:b2;
     int result;
     switch (controlBits->aluOp) {
         case 0:
@@ -59,66 +57,50 @@ Executed* Execute::performExecute(Decoded* decoded, Executed* prevExec, Memoried
     std::cout<<"Execute instruction: "<<decoded->fetched->printString<<std::endl;
     executed->decoded=decoded;
     if(decoded->fetched->regWr){
-        switch(decoded->fetched->instructionType){
-                case 'J':
-                executed->writeReg=31;
-                break;
-                case 'I':
-                executed->writeReg=decoded->fetched->rt;
-                break;
-                case 'R':
-                executed->writeReg=decoded->fetched->rd;
-                break;
+        if(decoded->fetched->bType==1){
+            executed->writeReg=31;
+        } else if(decoded->fetched->regDest){
+            executed->writeReg=decoded->fetched->rd;
+        } else{
+            executed->writeReg=decoded->fetched->rt;
         }
     } else{
         executed->writeReg=-1;
     }
-    
-//    int forwardedData1 = 0;
-//    bool forwardControl1 = false;
-//    int forwardedData2 = 0;
-//    bool forwardControl2 = false;
-    
+
     Fetched* ftchd = decoded->fetched;
     if(ftchd->instructionType=='I'||ftchd->instructionType=='R'){
         if((prevExec!=0)&&(ftchd->rs==prevExec->writeReg)){
             if(!(prevExec->decoded->fetched->memToReg)){
                 decoded->read1=prevExec->result;
-//                forwardedData1 = prevExec->result;
             } else{
                 //TO DO:
-                //STALL FOR LW
+                //If prev instruction is LW, stall
+                //Except if jump
+
             }
-//            forwardControl1=true;
         } else if((prevMem!=0)&&(ftchd->rs==prevMem->executed->writeReg)){
             if(!(prevMem->executed->decoded->fetched->memToReg)){
                 decoded->read1 = prevMem->executed->result;
-//                forwardedData1 = prevMem->executed->result;
             } else{
                 decoded->read1 = prevMem->read;
-//                forwardedData1 = prevMem->read;
             }
-//            forwardControl1=true;
         }
-        if((!ftchd->aluSrc)||ftchd->memWr){
+        if(!ftchd->aluSrc||ftchd->memWr){
             if((prevExec!=0)&&(ftchd->rt==prevExec->writeReg)){
                 if(!(prevExec->decoded->fetched->memToReg)){
                     decoded->read2 = prevExec->result;
-                    //                forwardedData2 = prevExec->result;
                 } else{
                     //TO DO:
-                    //STALL FOR LW
+                    // If current instruction is not sw, stall on LW for prev instr
+                    // If it is sw, handle forwarding in memory stage
                 }
-                //            forwardControl2=true;
             } else if((prevMem!=0)&&(ftchd->rt==prevMem->executed->writeReg)){
                 if(!(prevMem->executed->decoded->fetched->memToReg)){
                     decoded->read2 = prevMem->executed->result;
-                    //                forwardedData2 = prevMem->executed->result;
                 } else{
                     decoded->read2 = prevMem->read;
-                    //                forwardedData2 = prevMem->read;
                 }
-                //            forwardControl2=true;
             }
         }
     }

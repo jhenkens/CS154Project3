@@ -43,7 +43,7 @@ void RegFile::printRegisters(){
     std::cout<<std::endl;
 }
 
-Decoded* RegFile::performDecode(Fetched *fetched){
+Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode){
     if(fetched==0){
         std::cout<<"Decode instruction: "<<std::endl;
         return 0;
@@ -53,5 +53,28 @@ Decoded* RegFile::performDecode(Fetched *fetched){
     result->fetched=fetched;
     result->read1=getRegister(fetched->rs);
     result->read2=getRegister(fetched->rt);
+    result->stall=false;
+    
+    if(fetched->instructionType=='I'||fetched->instructionType=='R'){
+        if((prevDecode!=0)&&(prevDecode->fetched->memToReg)){
+            char prevDecodeWriteReg = (prevDecode->fetched->regDest)?(prevDecode->fetched->rd):(prevDecode->fetched->rt);
+            char rs = fetched->rs;
+            char rt = fetched->rt;
+            if(prevDecodeWriteReg==rs || ((!fetched->aluSrc)&&(prevDecodeWriteReg==rt))){
+                result->stall=true;
+            }
+        }    
+    }
+    switch(fetched->bType){
+        case 2:
+            result->branch = (result->read1>=result->read2);
+            break;
+        case 3:
+            result->branch = (result->read1!=result->read2);
+            break;
+        default:
+            result->branch = false;
+            break;
+    }
     return result;
 }

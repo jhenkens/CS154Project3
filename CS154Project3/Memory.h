@@ -15,13 +15,13 @@
 
 
 class Memory{
-    int* ram;
+    int ram [256];
 public:
     Memory();
     int getMemory(unsigned short);
     void setMemory(unsigned short,int data);
     int getMemoryOutput(Executed* exec);
-    Memoried* performMemory(Executed* exec);
+    Memoried* performMemory(Executed* exec,Memoried*);
 };
 
 

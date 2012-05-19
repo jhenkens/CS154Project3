@@ -23,7 +23,7 @@ public:
     int programLength();
     unsigned int getPC();
     unsigned int getPCPlus4();
-    void updatePC(Fetched* controlBits, bool zeroBit);
+    void updatePC(bool branch, bool jump, short branchOffset, int jumpAddr);
     Fetched* performFetch();
     bool isDone();
 };

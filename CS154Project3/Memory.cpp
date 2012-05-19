@@ -13,7 +13,6 @@
 #include <assert.h>
 
 Memory::Memory(){
-    ram = new int[256];
     for(int i = 0; i<256;i++)ram[i]=0;
 }
 
@@ -43,13 +42,19 @@ int Memory::getMemoryOutput(Executed* exec){
     }
 }
 
-Memoried* Memory::performMemory(Executed* exec){
+Memoried* Memory::performMemory(Executed* exec,Memoried* prevMem){
     if(exec==0){
         std::cout<<"Memory instruction: "<<std::endl;
         return 0;
     }
     Memoried* mem = new Memoried;
     std::cout<<"Memory instruction: "<<exec->decoded->fetched->printString<<std::endl;
+    
+    Fetched* ftchd = exec->decoded->fetched;
+    if(ftchd->memWr && (ftchd->rt==prevMem->executed->writeReg) && (prevMem->executed->decoded->fetched->memRd)){
+        exec->decoded->read2=prevMem->read;
+    }
+    
     mem->executed=exec;
     mem->read=getMemoryOutput(exec);
     return mem;

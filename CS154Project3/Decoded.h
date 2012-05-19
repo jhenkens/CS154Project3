@@ -17,6 +17,8 @@ struct Decoded{
     ~Decoded();
     int read1;
     int read2;
+    bool stall;
+    bool branch;
 };
 
 #endif

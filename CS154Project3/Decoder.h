@@ -11,7 +11,7 @@
 #ifndef CS154Project3_decoder_h
 #define CS154Project3_decoder_h
 #include <string>
-#include "Decoded.h"
+#include "Executed.h"
 
 class RegFile{
     int* registers;
@@ -21,7 +21,7 @@ public:
     int getRegister(unsigned char);
     void setRegister(unsigned char, int value);
     void printRegisters();
-    Decoded* performDecode(Fetched* fetched);
+    Decoded* performDecode(Fetched *fetched, Decoded *prevDecode);
 };
 
 

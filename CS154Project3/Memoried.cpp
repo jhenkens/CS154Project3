@@ -15,5 +15,4 @@
 Memoried::Memoried(Executed* exec): Executed(exec){
     this->result=exec->result;
     this->zeroBit=exec->zeroBit;
-    this->writeReg=exec->writeReg;
 }

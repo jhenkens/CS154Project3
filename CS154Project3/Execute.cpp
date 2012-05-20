@@ -53,19 +53,7 @@ Executed* Execute::performExecute(Decoded* decoded, Executed* prevExec, Memoried
         return 0;
     }
     Executed* executed = new Executed(decoded);
-    std::cout<<"Execute instruction: "<<decoded->printString<<std::endl;
-    if(executed->regWr){
-        if(executed->bType==1){
-            executed->writeReg=31;
-        } else if(executed->regDest){
-            executed->writeReg=executed->rd;
-        } else{
-            executed->writeReg=executed->rt;
-        }
-    } else{
-        executed->writeReg=-1;
-    }
-
+    std::cout<<"Execute instruction: "<<executed->printString<<std::endl;
     if(executed->instructionType=='I'||executed->instructionType=='R'){
         if((prevExec!=0)&&(executed->rs==prevExec->writeReg)){
             if(!(prevExec->memToReg)){
@@ -78,9 +66,9 @@ Executed* Execute::performExecute(Decoded* decoded, Executed* prevExec, Memoried
             }
         } else if((prevMem!=0)&&(executed->rs==prevMem->writeReg)){
             if(!(prevMem->memToReg)){
-                decoded->readReg1 = prevMem->result;
+                executed->readReg1 = prevMem->result;
             } else{
-                decoded->readReg1 = prevMem->memRead;
+                executed->readReg1 = prevMem->memRead;
             }
         }
         if(!executed->aluSrc||executed->memWr){

@@ -15,7 +15,6 @@
 struct Executed: public Decoded{
     int result;
     bool zeroBit;
-    char writeReg;
     Executed(Decoded*);
 };
 

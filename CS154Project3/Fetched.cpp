@@ -95,7 +95,17 @@ Fetched* Fetched::getControlBits(int instruction, unsigned int pc){
 	result->aluOp+= ((addi||add||slt||sub||lw||sw||bge||jal)<<1);
 	result->aluOp+= (xori||sub||bne);
     
-    
+    if(result->regWr){
+        if(result->bType==1){
+            result->writeReg=31;
+        } else if(result->regDest){
+            result->writeReg=result->rd;
+        } else{
+            result->writeReg=result->rt;
+        }
+    } else{
+        result->writeReg=-1;
+    }
     result->instruction=instruction;
     
     std::stringstream ss;

@@ -42,6 +42,7 @@ struct Fetched{
     static Fetched* getControlBits(int,unsigned int);
     int instruction;
     
+    char writeReg;
     bool branchPredictorWhenMade;
 };
 

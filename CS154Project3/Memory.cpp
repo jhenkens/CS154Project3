@@ -47,11 +47,11 @@ Memoried* Memory::performMemory(Executed* exec,Memoried* prevMem){
         return 0;
     }
     Memoried* mem = new Memoried(exec);
-    std::cout<<"Memory instruction: "<<exec->printString<<std::endl;
+    std::cout<<"Memory instruction: "<<mem->printString<<std::endl;
     
-    if(exec->memWr && (exec->rt==prevMem->writeReg) && (prevMem->memRd)){
-        exec->readReg2=prevMem->memRead;
+    if(mem->memWr && (mem->rt==prevMem->writeReg) && (prevMem->memRd)){
+        mem->readReg2=prevMem->memRead;
     }
-    mem->memRead=getMemoryOutput(exec);
+    mem->memRead=getMemoryOutput(mem);
     return mem;
 }

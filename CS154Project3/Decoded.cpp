@@ -33,4 +33,5 @@ Decoded::Decoded(Fetched* fetched){
     this->aluOp=fetched->aluOp;
     this->instruction=fetched->instruction;
     this->branchPredictorWhenMade=fetched->branchPredictorWhenMade;
+    this->writeReg=fetched->writeReg;
 }

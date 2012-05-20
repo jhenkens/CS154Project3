@@ -153,10 +153,10 @@ Fetched::~Fetched(){
 
 unsigned int Fetched::getPredictedOffset(){
     if(branch && branchPredictorWhenMade){
-        std::cerr<<"Predicting taken!"<<std::endl;
+//        std::cerr<<"Predicting taken!"<<std::endl;
         return immi<<2;
     } else{
-        std::cerr<<"Predicting not taken!"<<std::endl;
+//        std::cerr<<"Predicting not taken!"<<std::endl;
         return 0;
     }
 }

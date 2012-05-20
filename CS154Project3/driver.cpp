@@ -75,7 +75,7 @@ int main(int argc, char * argv[])
             delete prevMem;
             prevMem=memoried;
         }else if(decoded!=0 && (decoded->branch) && (decoded->branchPredictorWhenMade!=decoded->branchResult)){
-            cerr<<"I predicted wrong!"<<endl;
+//            cerr<<"I predicted wrong!"<<endl;
             //If we need to squash, delete the fetched instruction
             delete instr;
             instr=0;

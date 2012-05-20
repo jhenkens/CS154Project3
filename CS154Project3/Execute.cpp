@@ -12,14 +12,13 @@
 #include "Execute.h"
 #include "Memoried.h"
 
-int Execute::aluOp(Decoded* decoded){
-    Fetched* controlBits= decoded->fetched;
-    int reg1 = decoded->read1;
-    int reg2 = decoded->read2;
+int Execute::aluOp(Executed* decoded){
+    int reg1 = decoded->readReg1;
+    int reg2 = decoded->readReg2;
     int a1=reg1;
-    int a2=(controlBits->aluSrc)?controlBits->immi:reg2;
+    int a2=(decoded->aluSrc)?decoded->immi:reg2;
     int result;
-    switch (controlBits->aluOp) {
+    switch (decoded->aluOp) {
         case 0:
             //And
             result = a1&a2;
@@ -53,60 +52,58 @@ Executed* Execute::performExecute(Decoded* decoded, Executed* prevExec, Memoried
         std::cout<<"Execute instruction: "<<std::endl;
         return 0;
     }
-    Executed* executed = new Executed;
-    std::cout<<"Execute instruction: "<<decoded->fetched->printString<<std::endl;
-    executed->decoded=decoded;
-    if(decoded->fetched->regWr){
-        if(decoded->fetched->bType==1){
+    Executed* executed = new Executed(decoded);
+    std::cout<<"Execute instruction: "<<decoded->printString<<std::endl;
+    if(executed->regWr){
+        if(executed->bType==1){
             executed->writeReg=31;
-        } else if(decoded->fetched->regDest){
-            executed->writeReg=decoded->fetched->rd;
+        } else if(executed->regDest){
+            executed->writeReg=executed->rd;
         } else{
-            executed->writeReg=decoded->fetched->rt;
+            executed->writeReg=executed->rt;
         }
     } else{
         executed->writeReg=-1;
     }
 
-    Fetched* ftchd = decoded->fetched;
-    if(ftchd->instructionType=='I'||ftchd->instructionType=='R'){
-        if((prevExec!=0)&&(ftchd->rs==prevExec->writeReg)){
-            if(!(prevExec->decoded->fetched->memToReg)){
-                decoded->read1=prevExec->result;
+    if(executed->instructionType=='I'||executed->instructionType=='R'){
+        if((prevExec!=0)&&(executed->rs==prevExec->writeReg)){
+            if(!(prevExec->memToReg)){
+                executed->readReg1=prevExec->result;
             } else{
                 //TO DO:
                 //If prev instruction is LW, stall
                 //Except if jump
 
             }
-        } else if((prevMem!=0)&&(ftchd->rs==prevMem->executed->writeReg)){
-            if(!(prevMem->executed->decoded->fetched->memToReg)){
-                decoded->read1 = prevMem->executed->result;
+        } else if((prevMem!=0)&&(executed->rs==prevMem->writeReg)){
+            if(!(prevMem->memToReg)){
+                decoded->readReg1 = prevMem->result;
             } else{
-                decoded->read1 = prevMem->read;
+                decoded->readReg1 = prevMem->memRead;
             }
         }
-        if(!ftchd->aluSrc||ftchd->memWr){
-            if((prevExec!=0)&&(ftchd->rt==prevExec->writeReg)){
-                if(!(prevExec->decoded->fetched->memToReg)){
-                    decoded->read2 = prevExec->result;
+        if(!executed->aluSrc||executed->memWr){
+            if((prevExec!=0)&&(executed->rt==prevExec->writeReg)){
+                if(!(prevExec->memToReg)){
+                    executed->readReg2 = prevExec->result;
                 } else{
                     //TO DO:
                     // If current instruction is not sw, stall on LW for prev instr
                     // If it is sw, handle forwarding in memory stage
                 }
-            } else if((prevMem!=0)&&(ftchd->rt==prevMem->executed->writeReg)){
-                if(!(prevMem->executed->decoded->fetched->memToReg)){
-                    decoded->read2 = prevMem->executed->result;
+            } else if((prevMem!=0)&&(executed->rt==prevMem->writeReg)){
+                if(!(prevMem->memToReg)){
+                    executed->readReg2 = prevMem->result;
                 } else{
-                    decoded->read2 = prevMem->read;
+                    executed->readReg2 = prevMem->memRead;
                 }
             }
         }
     }
     
-    executed->result=aluOp(decoded);
-    
+    if(executed->instructionType!='J') executed->result=aluOp(executed);
+    else executed->result=executed->PC+4;
     executed->zeroBit=(executed->result)?0:1;
     return executed;
 }

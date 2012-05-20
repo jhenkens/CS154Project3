@@ -13,7 +13,7 @@
 #include <sstream>
 #include "Fetched.h"
 
-Fetched* Fetched::getControlBits(int instruction){
+Fetched* Fetched::getControlBits(int instruction, unsigned int pc){
     unsigned char op = (unsigned char)((instruction&0xFC000000)>>26);
     unsigned char func = (unsigned char)((instruction&0x3F));
     bool add = ((op==0x0)&&(func==0xA));
@@ -31,6 +31,8 @@ Fetched* Fetched::getControlBits(int instruction){
     
     
     Fetched* result = new Fetched;
+    
+    result->PC=pc;
     
     if(add){
         result->instructionName="add";

@@ -15,7 +15,7 @@
 
 class WriteBack{
 public:
-    static std::string performWriteBack(RegFile* reg, Memoried* mem);
+    static std::string performWriteBack(RegFile* reg, Memoried* mem,int* iE);
     
 };
 

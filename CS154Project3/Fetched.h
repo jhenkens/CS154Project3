@@ -12,6 +12,8 @@
 #define CS154Project3_Fetched_h
 
 struct Fetched{
+    unsigned int PC;
+    
     unsigned char op;
     unsigned char func;
     
@@ -37,8 +39,10 @@ struct Fetched{
     bool regWr;
     
     char aluOp;
-    static Fetched* getControlBits(int);
+    static Fetched* getControlBits(int,unsigned int);
     int instruction;
+    
+    bool branchPredictorWhenMade;
 };
 
 

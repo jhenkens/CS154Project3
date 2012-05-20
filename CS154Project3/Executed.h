@@ -12,12 +12,11 @@
 #define CS154Project3_Executed_h
 #include "Decoded.h"
 
-struct Executed{
+struct Executed: public Decoded{
     int result;
     bool zeroBit;
     char writeReg;
-    Decoded* decoded;
-    ~Executed();
+    Executed(Decoded*);
 };
 
 #endif

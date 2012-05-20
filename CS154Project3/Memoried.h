@@ -12,10 +12,9 @@
 #define CS154Project3_Memoried_h
 #include "Executed.h"
 
-struct Memoried{
-    Executed* executed;
-    ~Memoried();
-    int read;
+struct Memoried: public Executed{
+    int memRead;
+    Memoried(Executed*);
 };
 
 #endif

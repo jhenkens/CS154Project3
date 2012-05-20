@@ -12,13 +12,12 @@
 #define CS154Project3_Decoded_h
 #include "Fetched.h"
 
-struct Decoded{
-    Fetched* fetched;
-    ~Decoded();
-    int read1;
-    int read2;
+struct Decoded: public Fetched{
+    int readReg1;
+    int readReg2;
     bool stall;
     bool branch;
+    Decoded(Fetched*);
 };
 
 #endif

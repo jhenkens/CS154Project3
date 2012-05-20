@@ -22,7 +22,7 @@
 class Execute{
     Execute();
 public:
-    static int aluOp(Decoded* decoded);
+    static int aluOp(Executed* decoded);
     static Executed* performExecute(Decoded* decoded, Executed* prevExec, Memoried* prevMem);
 };
 

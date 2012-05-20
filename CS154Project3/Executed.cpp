@@ -11,6 +11,9 @@
 #include <iostream>
 #include "Executed.h"   
 
-Executed::~Executed(){
-    if(decoded!=0) delete decoded;
+Executed::Executed(Decoded* decoded): Decoded(decoded){
+    this->readReg1=decoded->readReg1;
+    this->readReg2=decoded->readReg2;
+    this->stall=decoded->stall;
+    this->branch=decoded->branch;
 }

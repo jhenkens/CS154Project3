@@ -11,7 +11,9 @@
 #include <iostream>
 #include "Memoried.h"
 
-Memoried::~Memoried(){
-    if(executed!=0) delete executed;
-}
 
+Memoried::Memoried(Executed* exec): Executed(exec){
+    this->result=exec->result;
+    this->zeroBit=exec->zeroBit;
+    this->writeReg=exec->writeReg;
+}

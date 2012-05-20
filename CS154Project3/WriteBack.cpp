@@ -12,20 +12,17 @@
 #include "WriteBack.h"
 #include <sstream>
 
-std::string WriteBack::performWriteBack(RegFile* reg, Memoried* mem){
+std::string WriteBack::performWriteBack(RegFile* reg, Memoried* mem, int* iE){
     if(mem==0){
         return "WriteBack instruction: ";
     }
-    Fetched* controlBits = mem->executed->decoded->fetched;
     std::stringstream ss;
-    ss<<"WriteBack instruction: "<<controlBits->printString;
-    if(controlBits->regWr){
-        if(controlBits->bType==1) reg->setRegister(31,0); // TO DO - HANDLE PCPLUS4 WRITE?! instead of 0
-        else{ 
-            unsigned char destReg = controlBits->regDest?controlBits->rd:controlBits->rt;
-            int writeData = controlBits->memToReg?mem->read:mem->executed->result;
-            reg->setRegister(destReg,writeData);
-        }
+    ss<<"WriteBack instruction: "<<mem->printString;
+    if(mem->regWr){
+        unsigned char destReg = mem->writeReg;
+        int writeData = mem->memToReg?mem->memRead:mem->result;
+        reg->setRegister(destReg,writeData);
     }
+    (*iE)++;
     return ss.str();
 }

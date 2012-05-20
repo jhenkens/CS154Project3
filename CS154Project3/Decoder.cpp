@@ -48,29 +48,28 @@ Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode){
         std::cout<<"Decode instruction: "<<std::endl;
         return 0;
     }
-    Decoded* result = new Decoded;
+    Decoded* result = new Decoded(fetched);
     std::cout<<"Decode instruction: "<<fetched->printString<<std::endl;
-    result->fetched=fetched;
-    result->read1=getRegister(fetched->rs);
-    result->read2=getRegister(fetched->rt);
+    result->readReg1=getRegister(fetched->rs);
+    result->readReg2=getRegister(fetched->rt);
     result->stall=false;
     
     if(fetched->instructionType=='I'||fetched->instructionType=='R'){
-        if((prevDecode!=0)&&(prevDecode->fetched->memToReg)){
-            char prevDecodeWriteReg = (prevDecode->fetched->regDest)?(prevDecode->fetched->rd):(prevDecode->fetched->rt);
-            char rs = fetched->rs;
-            char rt = fetched->rt;
-            if(prevDecodeWriteReg==rs || ((!fetched->aluSrc)&&(prevDecodeWriteReg==rt))){
+        if((prevDecode!=0)&&(prevDecode->memToReg)){
+            char prevDecodeWriteReg = (prevDecode->regDest)?(prevDecode->rd):(prevDecode->rt);
+            char rs = result->rs;
+            char rt = result->rt;
+            if(prevDecodeWriteReg==rs || ((!result->aluSrc)&&(prevDecodeWriteReg==rt))){
                 result->stall=true;
             }
         }    
     }
     switch(fetched->bType){
         case 2:
-            result->branch = (result->read1>=result->read2);
+            result->branch = (result->readReg1>=result->readReg2);
             break;
         case 3:
-            result->branch = (result->read1!=result->read2);
+            result->branch = (result->readReg1!=result->readReg2);
             break;
         default:
             result->branch = false;

@@ -29,13 +29,12 @@ void Memory::setMemory(unsigned short addr, int data){
 
 int Memory::getMemoryOutput(Executed* exec){
     int addr = exec->result;
-    int input = exec->decoded->read2;
-    Fetched* controlBits = exec->decoded->fetched;
-    assert(!(controlBits->memWr&&controlBits->memRd));
-    if(controlBits->memWr){
+    int input = exec->readReg2;
+    assert(!(exec->memWr&&exec->memRd));
+    if(exec->memWr){
         setMemory((unsigned short) addr,input);
         return 0;
-    } else if(controlBits->memRd){
+    } else if(exec->memRd){
         return getMemory((unsigned short) addr);
     } else{
         return 0;
@@ -47,15 +46,12 @@ Memoried* Memory::performMemory(Executed* exec,Memoried* prevMem){
         std::cout<<"Memory instruction: "<<std::endl;
         return 0;
     }
-    Memoried* mem = new Memoried;
-    std::cout<<"Memory instruction: "<<exec->decoded->fetched->printString<<std::endl;
+    Memoried* mem = new Memoried(exec);
+    std::cout<<"Memory instruction: "<<exec->printString<<std::endl;
     
-    Fetched* ftchd = exec->decoded->fetched;
-    if(ftchd->memWr && (ftchd->rt==prevMem->executed->writeReg) && (prevMem->executed->decoded->fetched->memRd)){
-        exec->decoded->read2=prevMem->read;
+    if(exec->memWr && (exec->rt==prevMem->writeReg) && (prevMem->memRd)){
+        exec->readReg2=prevMem->memRead;
     }
-    
-    mem->executed=exec;
-    mem->read=getMemoryOutput(exec);
+    mem->memRead=getMemoryOutput(exec);
     return mem;
 }

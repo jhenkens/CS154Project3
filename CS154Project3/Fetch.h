@@ -17,6 +17,10 @@ class Fetch{
     unsigned int pc;
     unsigned int maxPC;
     unsigned int length;
+    
+    unsigned int branchPredFailedPC;
+    bool prevBranchResults;
+    bool branchPredictor;
 public:
     Fetch(char*);
     int nextInstruction();
@@ -26,6 +30,7 @@ public:
     void updatePC(bool branch, bool jump, short branchOffset, int jumpAddr);
     Fetched* performFetch();
     bool isDone();
+    void updateBranchPredictor(bool branchResults);
 };
 
 

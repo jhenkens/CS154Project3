@@ -36,6 +36,8 @@ Fetch::Fetch(char* filename){
         instructions[i]=instructionsVect[i];
     }
     pc = 0;
+    branchPredictor=false;
+    prevBranchResults=false;
 }
 
 void Fetch::updatePC(bool branch, bool jump, short branchOffset, int jumpAddr){
@@ -46,6 +48,11 @@ void Fetch::updatePC(bool branch, bool jump, short branchOffset, int jumpAddr){
     } else {
         pc=getPCPlus4();
     }
+}
+
+void Fetch::updateBranchPredictor(bool branchResults){
+    if(branchResults==prevBranchResults) branchPredictor=branchResults;
+    prevBranchResults=branchResults;
 }
 
 int Fetch::nextInstruction(){
@@ -72,7 +79,8 @@ Fetched* Fetch::performFetch(){
         std::cout<<"Fetch instruction: "<<std::endl;
         return 0;
     }
-    Fetched* brokenDown = Fetched::getControlBits(nextInstruction());
+    Fetched* brokenDown = Fetched::getControlBits(nextInstruction(),pc);
+    brokenDown->branchPredictorWhenMade=branchPredictor;
     std::cout<<"Fetch instruction: "<<brokenDown->printString<<std::endl;
     return brokenDown;
 }

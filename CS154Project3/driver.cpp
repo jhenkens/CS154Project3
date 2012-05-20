@@ -34,6 +34,8 @@ int main(int argc, char * argv[])
     RegFile* reg = new RegFile;
     Memory* mem = new Memory;
     int i;
+    int* iE = new int;
+    (*iE)=0;
     Fetched* prevInstruction=0;
     Decoded* prevDecode=0;
     Executed* prevExecute=0;
@@ -43,7 +45,7 @@ int main(int argc, char * argv[])
         cout<<"Cycle "<<i<<":"<<endl;
         Fetched* instr = instMem->performFetch();
         
-        string wbRes = WriteBack::performWriteBack(reg, prevMem);
+        string wbRes = WriteBack::performWriteBack(reg, prevMem,iE);
         
         Decoded* decoded = reg->performDecode(prevInstruction, prevDecode);
         
@@ -54,29 +56,32 @@ int main(int argc, char * argv[])
         cout<<wbRes<<endl;
         
         reg->printRegisters();
+        
         if(decoded!=0&&decoded->stall){
             delete instr;
-            decoded->fetched=0;
             delete decoded;
             prevDecode = 0;
             prevExecute=execute;
             delete prevMem;
             prevMem=memoried;
-        } if(decoded!=0 && decoded->branch){
+        } if(decoded!=0 && (decoded->branch!=decoded->branchPredictorWhenMade)){
             delete instr;
             prevInstruction=0;
             prevDecode = decoded;
             prevExecute = execute;
             
-            instMem->updatePC(true,false,(decoded->fetched->immi)<<2,0);
+            instMem->updatePC(true,false,(decoded->immi)<<2,0);
             delete prevMem;
             prevMem = memoried;
         } else{
+            delete prevInstruction;
             prevInstruction=instr;
+            delete prevDecode;
             prevDecode = decoded;
+            delete prevExecute;
             prevExecute = execute;
             
-            instMem->updatePC(false,false,0,0);
+            instMem->updatePC(false,(instr!=0&&instr->bType==1),0,(instr!=0)?(instr->jumpAddr)<<2:0);
             delete prevMem;
             prevMem = memoried;
         }
@@ -84,10 +89,12 @@ int main(int argc, char * argv[])
     }
     
     cout<<"Cycles: "<<i<<endl;
-    cout<<"Instructions executed: "<<instMem->programLength()<<endl;
+    cout<<"Instructions executed: "<<(*iE)<<endl;
     
     return 0;
 }
+
+
 
 bool shouldContinue(Fetch* instMem, Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem){
     bool done = instMem->isDone();

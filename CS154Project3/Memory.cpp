@@ -18,12 +18,12 @@ Memory::Memory(){
 
 
 int Memory::getMemory(unsigned short addr){
-    assert(addr>=0 && addr<1024);
+    assert(addr<1024);
     return ram[addr>>2];
 }
 
 void Memory::setMemory(unsigned short addr, int data){
-    assert(addr>=0 && addr<1024);
+    assert(addr<1024);
     ram[addr>>2] = data;
 }
 
@@ -48,8 +48,8 @@ Memoried* Memory::performMemory(Executed* exec,Memoried* prevMem){
     }
     Memoried* mem = new Memoried(exec);
     std::cout<<"Memory instruction: "<<mem->printString<<std::endl;
-    
-    if(mem->memWr && (mem->rt==prevMem->writeReg) && (prevMem->memRd)){
+
+    if(mem->memWr && (prevMem->memRd) && (mem->rt==prevMem->writeReg)){
         mem->readReg2=prevMem->memRead;
     }
     mem->memRead=getMemoryOutput(mem);

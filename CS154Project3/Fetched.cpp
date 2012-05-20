@@ -13,7 +13,11 @@
 #include <sstream>
 #include "Fetched.h"
 
-Fetched* Fetched::getControlBits(int instruction, unsigned int pc){
+Fetched::Fetched(){
+    
+}
+
+Fetched::Fetched(int instruction, unsigned int pc){
     unsigned char op = (unsigned char)((instruction&0xFC000000)>>26);
     unsigned char func = (unsigned char)((instruction&0x3F));
     bool add = ((op==0x0)&&(func==0xA));
@@ -28,98 +32,131 @@ Fetched* Fetched::getControlBits(int instruction, unsigned int pc){
     bool jal = (op==0x24);
     
     
-    
-    
-    Fetched* result = new Fetched;
-    
-    result->PC=pc;
+    this->PC=pc;
     
     if(add){
-        result->instructionName="add";
-        result->instructionType='R';
+        this->instructionName="add";
+        this->instructionType='R';
     } else if(addi){
-        result->instructionName="addi";
-        result->instructionType='I';
+        this->instructionName="addi";
+        this->instructionType='I';
     } else if(slt){
-        result->instructionName="slt";
-        result->instructionType='R';
+        this->instructionName="slt";
+        this->instructionType='R';
     } else if(sub){
-        result->instructionName="sub";
-        result->instructionType='R';
+        this->instructionName="sub";
+        this->instructionType='R';
     } else if(xori){
-        result->instructionName="xori";
-        result->instructionType='I';
+        this->instructionName="xori";
+        this->instructionType='I';
     } else if(lw){
-        result->instructionName="lw";
-        result->instructionType='I';
+        this->instructionName="lw";
+        this->instructionType='I';
     } else if(sw){
-        result->instructionName="sw";
-        result->instructionType='I';
+        this->instructionName="sw";
+        this->instructionType='I';
     } else if(bne){
-        result->instructionName="bne";
-        result->instructionType='I';
+        this->instructionName="bne";
+        this->instructionType='I';
     } else if(bge){
-        result->instructionName="bge";
-        result->instructionType='I';
+        this->instructionName="bge";
+        this->instructionType='I';
     } else if(jal){
-        result->instructionName="jal";
-        result->instructionType='J';
+        this->instructionName="jal";
+        this->instructionType='J';
     }
     
     
-    result->op=op;
-    result->func=func;
-    result->rs=(unsigned char)((instruction>>21)&0x1F);
-    result->rt=(unsigned char)((instruction>>16)&0x1F);
-    result->rd=(unsigned char)((instruction>>11)&0x1F);
+    this->op=op;
+    this->func=func;
+    this->rs=(unsigned char)((instruction>>21)&0x1F);
+    this->rt=(unsigned char)((instruction>>16)&0x1F);
+    this->rd=(unsigned char)((instruction>>11)&0x1F);
     
     //sign extension
     if((instruction>>15)&0x1){
-        result->immi=(0xFFFF0000||(instruction&0xFFFF));
+        this->immi=(0xFFFF0000|(instruction&0xFFFF));
     } else{
-        result->immi=(instruction&0xFFFF);
+        this->immi=(instruction&0xFFFF);
     }
-    result->jumpAddr=((instruction&0x3FFFFFF));
+    this->jumpAddr=(instruction&0x3FFFFFF);
     
-    result->memWr = sw;
-	result->memToReg = lw;
-	result->memRd = lw;
-	result->aluSrc = (sw||lw||xori||addi);
-	result->bType = ((bne||bge)<<1);
-	result->bType+= (bne||jal);
+    this->memWr = sw;
+	this->memToReg = lw;
+	this->memRd = lw;
+	this->aluSrc = (sw||lw||xori||addi);
+	this->bType = ((bne||bge)<<1);
+	this->bType+= (bne||jal);
 	
-	result->regDest = (add||slt||sub);
-	result->regWr = (addi||xori||add||slt||sub||lw||jal);
+	this->regDest = (add||slt||sub);
+	this->regWr = (addi||xori||add||slt||sub||lw||jal);
 	
-	result->aluOp = ((xori||slt||bne||bge)<<2);
-	result->aluOp+= ((addi||add||slt||sub||lw||sw||bge||jal)<<1);
-	result->aluOp+= (xori||sub||bne);
+	this->aluOp = ((xori||slt||bne||bge)<<2);
+	this->aluOp+= ((addi||add||slt||sub||lw||sw||bge||jal)<<1);
+	this->aluOp+= (xori||sub||bne);
     
-    if(result->regWr){
-        if(result->bType==1){
-            result->writeReg=31;
-        } else if(result->regDest){
-            result->writeReg=result->rd;
+    if(this->regWr){
+        if(this->bType==1){
+            this->writeReg=31;
+        } else if(this->regDest){
+            this->writeReg=this->rd;
         } else{
-            result->writeReg=result->rt;
+            this->writeReg=this->rt;
         }
     } else{
-        result->writeReg=-1;
+        this->writeReg=-1;
     }
-    result->instruction=instruction;
+    this->instruction=instruction;
+    
+    branch = (bType>1);
+    this->stall = false;
+    
     
     std::stringstream ss;
-    switch(result->instructionType){
+    switch(this->instructionType){
         case 'J':
-            ss<<result->instructionName<<" "<<result->jumpAddr;
+            ss<<this->instructionName<<" "<<this->jumpAddr;
             break;
         case 'I':
-            ss<<result->instructionName<<" $"<<((short)result->rt)<<", $"<<((short)result->rs)<<", "<<result->immi;
+            ss<<this->instructionName<<" $";
+            if(branch){
+                ss<<((short)this->rs)<<", $"<<((short)this->rt);
+            } else{
+                ss<<((short)this->rt)<<", $"<<((short)this->rs);
+            }
+            ss<<", "<<this->immi;
             break;
         case 'R':
-            ss<<result->instructionName<<" $"<<((short)result->rd)<<", $"<<((short)result->rs)<<", $"<<((short)result->rt);
+            ss<<this->instructionName<<" $"<<((short)this->rd)<<", $"<<((short)this->rs)<<", $"<<((short)this->rt);
             break;            
     }
-    result->printString=ss.str();
-    return result;
+    this->printString=ss.str();
+}
+
+void Fetched::setIfStalls(Fetched *prevFetch, Fetched *prevDecode){
+    if(branch){   
+        if((prevFetch!=0 && prevFetch->regWr) && 
+           (prevFetch->writeReg==rs || prevFetch->writeReg==rt)){
+            stall=true;
+            return;
+        } else if((prevDecode!=0 && prevDecode->regWr && prevDecode->memRd)&&
+                  (prevDecode->writeReg==rs || prevDecode->writeReg==rt)){
+            stall=true;
+            return;
+        }
+    }
+}
+
+Fetched::~Fetched(){
+    
+}
+
+unsigned int Fetched::getPredictedOffset(){
+    if(branch && branchPredictorWhenMade){
+        std::cerr<<"Predicting taken!"<<std::endl;
+        return immi<<2;
+    } else{
+        std::cerr<<"Predicting not taken!"<<std::endl;
+        return 0;
+    }
 }

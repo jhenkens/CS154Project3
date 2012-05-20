@@ -18,12 +18,12 @@ RegFile::RegFile(){
 }
 
 int RegFile::getRegister(unsigned char regNum){
-    assert(regNum<32 && regNum>=0);
+    assert(regNum<32);
     return registers[regNum];
 }
 
 void RegFile::setRegister(unsigned char regNum, int value){
-    assert(regNum<32 && regNum>=0);
+    assert(regNum<32);
     if (regNum != 0) {
         registers[regNum]=value;
     }
@@ -43,7 +43,7 @@ void RegFile::printRegisters(){
     std::cout<<std::endl;
 }
 
-Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode){
+Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode, Executed* prevExec){
     if(fetched==0){
         std::cout<<"Decode instruction: "<<std::endl;
         return 0;
@@ -54,6 +54,7 @@ Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode){
     result->readReg2=getRegister(result->rt);
     result->stall=false;
     
+    //Handle decode stall
     if(result->instructionType=='I'||result->instructionType=='R'){
         if((prevDecode!=0)&&(prevDecode->memToReg)){
             char prevDecodeWriteReg = (prevDecode->regDest)?(prevDecode->rd):(prevDecode->rt);
@@ -64,16 +65,31 @@ Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode){
             }
         }    
     }
-    switch(result->bType){
-        case 2:
-            result->branch = (result->readReg1>=result->readReg2);
-            break;
-        case 3:
-            result->branch = (result->readReg1!=result->readReg2);
-            break;
-        default:
-            result->branch = false;
-            break;
+    
+    //determine branch output
+
+    
+    if(result->branch){
+        int wire1 = result->readReg1;
+        int wire2 = result->readReg2;
+        if(prevExec!=0 && prevExec->regWr && !prevExec->memRd){
+            if (prevExec->writeReg==result->rs){
+                wire1=prevExec->result;
+            }
+            if(prevExec->writeReg==result->rt){
+                wire2=prevExec->result;
+            }
+        } 
+        switch(result->bType){
+            case 2:
+                result->branchResult = (wire1>=wire2);
+                break;
+            case 3:
+                result->branchResult = (wire1!=wire2);
+                break;
+            default:
+                break;
+        }
     }
     return result;
 }

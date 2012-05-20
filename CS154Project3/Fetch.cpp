@@ -40,14 +40,18 @@ Fetch::Fetch(char* filename){
     prevBranchResults=false;
 }
 
-void Fetch::updatePC(bool branch, bool jump, short branchOffset, int jumpAddr){
-    if(branch){
-        pc+=branchOffset;
-    } else if(jump){
-        pc=jumpAddr;
-    } else {
+void Fetch::updatePC(Fetched* fetched){
+    if(fetched!=0 && fetched->branch){
+        pc=getPCPlus4()+fetched->getPredictedOffset();
+    } else if(fetched!=0 && fetched->bType==1){
+        pc=((fetched->jumpAddr)<<2);
+    } else{
         pc=getPCPlus4();
     }
+}
+
+void Fetch::updatePC(Decoded* dec){
+    pc=dec->getProperBranchPC();
 }
 
 void Fetch::updateBranchPredictor(bool branchResults){
@@ -79,7 +83,7 @@ Fetched* Fetch::performFetch(){
         std::cout<<"Fetch instruction: "<<std::endl;
         return 0;
     }
-    Fetched* brokenDown = Fetched::getControlBits(nextInstruction(),pc);
+    Fetched* brokenDown = new Fetched(nextInstruction(),pc);
     brokenDown->branchPredictorWhenMade=branchPredictor;
     std::cout<<"Fetch instruction: "<<brokenDown->printString<<std::endl;
     return brokenDown;

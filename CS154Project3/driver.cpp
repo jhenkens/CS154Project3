@@ -44,10 +44,12 @@ int main(int argc, char * argv[])
         
         cout<<"Cycle "<<i<<":"<<endl;
         Fetched* instr = instMem->performFetch();
+        if(instr!=0)instr->setIfStalls(prevInstruction, prevDecode);
         
         string wbRes = WriteBack::performWriteBack(reg, prevMem,iE);
         
-        Decoded* decoded = reg->performDecode(prevInstruction, prevDecode);
+        Decoded* decoded = reg->performDecode(prevInstruction, prevDecode, prevExecute);
+        if(decoded!=0 && decoded->branch) instMem->updateBranchPredictor(decoded->branchResult);
         
         Executed* execute = Execute::performExecute(prevDecode,prevExecute,prevMem);
         
@@ -58,43 +60,76 @@ int main(int argc, char * argv[])
         reg->printRegisters();
         
         if(decoded!=0&&decoded->stall){
+            //Delete the new stuff
             delete instr;
+            instr = 0;
             delete decoded;
+            decoded = 0;
+            //insert the noop
+            delete prevDecode;
             prevDecode = 0;
+            //handle as normal, minus the PC updating
+            delete prevExecute;
             prevExecute=execute;
+            
             delete prevMem;
             prevMem=memoried;
-        } if(decoded!=0 && (decoded->branch!=decoded->branchPredictorWhenMade)){
+        }else if(decoded!=0 && (decoded->branch) && (decoded->branchPredictorWhenMade!=decoded->branchResult)){
+            cerr<<"I predicted wrong!"<<endl;
+            //If we need to squash, delete the fetched instruction
             delete instr;
+            instr=0;
+            //Then insert the noop
+            delete prevInstruction;
             prevInstruction=0;
+            //Then handle like normal
+            delete prevDecode;
             prevDecode = decoded;
+            delete prevExecute;
             prevExecute = execute;
-            
-            instMem->updatePC(true,false,(decoded->immi)<<2,0);
             delete prevMem;
             prevMem = memoried;
-        } else{
+            //Update PC to whatever we didn't go to.
+            instMem->updatePC(decoded);
+        } else if(instr!=0 && instr->stall){
+            //Delete the new stuff
+            delete instr;
+            instr=0;
+            //insert the noop
+            delete prevInstruction;
+            prevInstruction=0;
+            //handle as normal, minus the PC updating
+            delete prevDecode;
+            prevDecode = decoded;
+            delete prevExecute;
+            prevExecute=execute;
+            
+            delete prevMem;
+            prevMem=memoried;
+        }else{
+//            //Normal case:
             delete prevInstruction;
             prevInstruction=instr;
             delete prevDecode;
             prevDecode = decoded;
             delete prevExecute;
             prevExecute = execute;
-            
-            instMem->updatePC(false,(instr!=0&&instr->bType==1),0,(instr!=0)?(instr->jumpAddr)<<2:0);
             delete prevMem;
             prevMem = memoried;
+            
+            //Update PC based on prev instruction
+            instMem->updatePC(instr);
         }
 
     }
-    
+
     cout<<"Cycles: "<<i<<endl;
     cout<<"Instructions executed: "<<(*iE)<<endl;
     
     return 0;
 }
 
-
+//bool branchALU(Decoded* branch, Executed* p
 
 bool shouldContinue(Fetch* instMem, Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem){
     bool done = instMem->isDone();

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "main:driver.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Decoded::Decoded(Fetched*):Decoded.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "&amp;(fetched-&gt;printString)">
+            </PersistentString>
+            <PersistentString
+               value = "&amp;(this-&gt;printString)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "Execute::performExecute(Decoded*, Executed*, Memoried*):Execute.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Memory::performMemory(Executed*, Memoried*):Memory.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "WriteBack::performWriteBack(RegFile*, Memoried*):WriteBack.cpp">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

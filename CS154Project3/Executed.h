@@ -16,6 +16,7 @@ struct Executed: public Decoded{
     int result;
     bool zeroBit;
     Executed(Decoded*);
+    ~Executed();
 };
 
 #endif

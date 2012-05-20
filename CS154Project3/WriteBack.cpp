@@ -19,9 +19,8 @@ std::string WriteBack::performWriteBack(RegFile* reg, Memoried* mem, int* iE){
     std::stringstream ss;
     ss<<"WriteBack instruction: "<<mem->printString;
     if(mem->regWr){
-        unsigned char destReg = mem->writeReg;
         int writeData = mem->memToReg?mem->memRead:mem->result;
-        reg->setRegister(destReg,writeData);
+        reg->setRegister(mem->writeReg,writeData);
     }
     (*iE)++;
     return ss.str();

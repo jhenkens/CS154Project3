@@ -11,6 +11,7 @@
 #ifndef Project1_fetch_h
 #define Project1_fetch_h
 #include "Fetched.h"
+#include "Decoded.h"
 
 class Fetch{
     int* instructions;
@@ -27,7 +28,8 @@ public:
     int programLength();
     unsigned int getPC();
     unsigned int getPCPlus4();
-    void updatePC(bool branch, bool jump, short branchOffset, int jumpAddr);
+    void updatePC(Fetched*);
+    void updatePC(Decoded*);
     Fetched* performFetch();
     bool isDone();
     void updateBranchPredictor(bool branchResults);

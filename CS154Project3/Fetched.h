@@ -39,11 +39,19 @@ struct Fetched{
     bool regWr;
     
     char aluOp;
-    static Fetched* getControlBits(int,unsigned int);
+    Fetched(int,unsigned int);
+    Fetched();
     int instruction;
     
     char writeReg;
+    bool branch;
     bool branchPredictorWhenMade;
+    bool stall;
+    
+    ~Fetched();
+    
+    unsigned int getPredictedOffset();
+    void setIfStalls(Fetched* prevFetch, Fetched* prevDecode);
 };
 
 

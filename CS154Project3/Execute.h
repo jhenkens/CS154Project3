@@ -14,10 +14,6 @@
 #include "Executed.h"
 #include "Memoried.h"
 
-#define NEITHER 0
-#define TOP 1
-#define BOTTOM 2
-#define BOTH 3
 
 class Execute{
     Execute();

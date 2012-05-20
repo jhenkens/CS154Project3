@@ -34,4 +34,15 @@ Decoded::Decoded(Fetched* fetched){
     this->instruction=fetched->instruction;
     this->branchPredictorWhenMade=fetched->branchPredictorWhenMade;
     this->writeReg=fetched->writeReg;
+    this->branch=fetched->branch;
+}
+
+unsigned int Decoded::getProperBranchPC(){
+    unsigned int result = PC+4;
+    if(branchResult) result+=(immi<<2);
+    return result;
+}
+
+Decoded::~Decoded(){
+    
 }

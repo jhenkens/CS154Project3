@@ -13,9 +13,8 @@
 #include "Memoried.h"
 
 int Execute::aluOp(Executed* decoded){
-    int reg1 = decoded->readReg1;
     int reg2 = decoded->readReg2;
-    int a1=reg1;
+    int a1=decoded->readReg1;
     int a2=(decoded->aluSrc)?decoded->immi:reg2;
     int result;
     switch (decoded->aluOp) {
@@ -47,23 +46,20 @@ int Execute::aluOp(Executed* decoded){
     return result;
 }
 
+
+
 Executed* Execute::performExecute(Decoded* decoded, Executed* prevExec, Memoried* prevMem){
     if(decoded==0){
         std::cout<<"Execute instruction: "<<std::endl;
         return 0;
     }
+    std::cout<<"Execute instruction: "<<decoded->printString<<std::endl;
     Executed* executed = new Executed(decoded);
-    std::cout<<"Execute instruction: "<<executed->printString<<std::endl;
     if(executed->instructionType=='I'||executed->instructionType=='R'){
         if((prevExec!=0)&&(executed->rs==prevExec->writeReg)){
             if(!(prevExec->memToReg)){
                 executed->readReg1=prevExec->result;
-            } else{
-                //TO DO:
-                //If prev instruction is LW, stall
-                //Except if jump
-
-            }
+            } 
         } else if((prevMem!=0)&&(executed->rs==prevMem->writeReg)){
             if(!(prevMem->memToReg)){
                 executed->readReg1 = prevMem->result;
@@ -75,10 +71,6 @@ Executed* Execute::performExecute(Decoded* decoded, Executed* prevExec, Memoried
             if((prevExec!=0)&&(executed->rt==prevExec->writeReg)){
                 if(!(prevExec->memToReg)){
                     executed->readReg2 = prevExec->result;
-                } else{
-                    //TO DO:
-                    // If current instruction is not sw, stall on LW for prev instr
-                    // If it is sw, handle forwarding in memory stage
                 }
             } else if((prevMem!=0)&&(executed->rt==prevMem->writeReg)){
                 if(!(prevMem->memToReg)){

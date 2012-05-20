@@ -16,3 +16,6 @@ Memoried::Memoried(Executed* exec): Executed(exec){
     this->result=exec->result;
     this->zeroBit=exec->zeroBit;
 }
+Memoried::~Memoried(){
+    
+}

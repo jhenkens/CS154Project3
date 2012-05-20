@@ -16,12 +16,11 @@
 class RegFile{
     int* registers;
 public:
-    unsigned short getControlBits(int);
     RegFile();
     int getRegister(unsigned char);
     void setRegister(unsigned char, int value);
     void printRegisters();
-    Decoded* performDecode(Fetched *fetched, Decoded *prevDecode);
+    Decoded* performDecode(Fetched *fetched, Decoded *prevDecode, Executed* prevExec);
 };
 
 

@@ -15,9 +15,10 @@
 struct Decoded: public Fetched{
     int readReg1;
     int readReg2;
-    bool stall;
-    bool branch;
+    bool branchResult;
+    unsigned int getProperBranchPC();
     Decoded(Fetched*);
+    ~Decoded();
 };
 
 #endif

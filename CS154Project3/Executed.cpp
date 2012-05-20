@@ -16,4 +16,9 @@ Executed::Executed(Decoded* decoded): Decoded(decoded){
     this->readReg2=decoded->readReg2;
     this->stall=decoded->stall;
     this->branch=decoded->branch;
+    this->branchResult=decoded->branchResult;
+}
+
+Executed::~Executed(){
+    
 }

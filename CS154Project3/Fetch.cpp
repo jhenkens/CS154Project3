@@ -32,7 +32,7 @@ Fetch::Fetch(char* filename){
     length = (unsigned int) instructionsVect.size();
     maxPC = length*4;
     instructions = new int[length];
-    for(int i = 0; i < length;i++){
+    for(unsigned int i = 0; i < length;i++){
         instructions[i]=instructionsVect[i];
     }
     pc = 0;

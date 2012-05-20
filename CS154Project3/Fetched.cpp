@@ -134,17 +134,7 @@ Fetched::Fetched(int instruction, unsigned int pc){
 }
 
 void Fetched::setIfStalls(Fetched *prevFetch, Fetched *prevDecode){
-    if(branch){   
-        if((prevFetch!=0 && prevFetch->regWr) && 
-           (prevFetch->writeReg==rs || prevFetch->writeReg==rt)){
-            stall=true;
-            return;
-        } else if((prevDecode!=0 && prevDecode->regWr && prevDecode->memRd)&&
-                  (prevDecode->writeReg==rs || prevDecode->writeReg==rt)){
-            stall=true;
-            return;
-        }
-    }
+    
 }
 
 Fetched::~Fetched(){
@@ -153,10 +143,14 @@ Fetched::~Fetched(){
 
 unsigned int Fetched::getPredictedOffset(){
     if(branch && branchPredictorWhenMade){
-//        std::cerr<<"Predicting taken!"<<std::endl;
+#ifdef DEBUG
+        std::cerr<<"Predicting taken!"<<std::endl;
+#endif
         return immi<<2;
     } else{
-//        std::cerr<<"Predicting not taken!"<<std::endl;
+#ifdef DEBUG
+        std::cerr<<"Predicting not taken!"<<std::endl;
+#endif
         return 0;
     }
 }

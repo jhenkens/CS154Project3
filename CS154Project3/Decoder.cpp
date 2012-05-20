@@ -54,8 +54,17 @@ Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode, Executed*
     result->readReg2=getRegister(result->rt);
     result->stall=false;
     
-    //Handle decode stall
-    if(result->instructionType=='I'||result->instructionType=='R'){
+    //Handle branch stall
+    if(result->branch){   
+        if((prevDecode!=0 && prevDecode->regWr) && 
+           (prevDecode->writeReg==result->rs || prevDecode->writeReg==result->rt)){
+            result->stall=true;
+        } else if((prevExec!=0 && prevExec->regWr && prevExec->memRd)&&
+                  (prevExec->writeReg==result->rs || prevExec->writeReg==result->rt)){
+            result->stall=true;
+        }
+    }
+    if(!result->stall && (result->instructionType=='I'||result->instructionType=='R')){
         if((prevDecode!=0)&&(prevDecode->memToReg)){
             char prevDecodeWriteReg = (prevDecode->regDest)?(prevDecode->rd):(prevDecode->rt);
             char rs = result->rs;
@@ -69,7 +78,7 @@ Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode, Executed*
     //determine branch output
 
     
-    if(result->branch){
+    if(!result->stall && result->branch){
         int wire1 = result->readReg1;
         int wire2 = result->readReg2;
         if(prevExec!=0 && prevExec->regWr && !prevExec->memRd){

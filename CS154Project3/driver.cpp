@@ -49,7 +49,7 @@ int main(int argc, char * argv[])
         string wbRes = WriteBack::performWriteBack(reg, prevMem,iE);
         
         Decoded* decoded = reg->performDecode(prevInstruction, prevDecode, prevExecute);
-        if(decoded!=0 && decoded->branch) instMem->updateBranchPredictor(decoded->branchResult);
+        if(decoded!=0 && !decoded->stall&& decoded->branch) instMem->updateBranchPredictor(decoded->branchResult);
         
         Executed* execute = Execute::performExecute(prevDecode,prevExecute,prevMem);
         
@@ -75,7 +75,9 @@ int main(int argc, char * argv[])
             delete prevMem;
             prevMem=memoried;
         }else if(decoded!=0 && (decoded->branch) && (decoded->branchPredictorWhenMade!=decoded->branchResult)){
-//            cerr<<"I predicted wrong!"<<endl;
+#ifdef DEBUG
+            cerr<<"I predicted wrong!"<<endl;
+#endif
             //If we need to squash, delete the fetched instruction
             delete instr;
             instr=0;

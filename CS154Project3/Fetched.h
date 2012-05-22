@@ -46,7 +46,6 @@ struct Fetched{
     char writeReg;
     bool branch;
     bool branchPredictorWhenMade;
-    bool stall;
     
     ~Fetched();
     

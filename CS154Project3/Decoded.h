@@ -16,6 +16,7 @@ struct Decoded: public Fetched{
     int readReg1;
     int readReg2;
     bool branchResult;
+    bool stall;
     unsigned int getProperBranchPC();
     Decoded(Fetched*);
     ~Decoded();

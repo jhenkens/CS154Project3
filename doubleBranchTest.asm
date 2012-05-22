@@ -19,6 +19,6 @@ sub $18, $11, $10
 addi $10, $0, 8
 sw $11, 0($10)
 lw $19, 0($10)
-bne $19, $0, end
+bne $19, $0, trueend
 add $21, $0, $19
-end: add $20, $0, $19
+trueend: add $20, $0, $19

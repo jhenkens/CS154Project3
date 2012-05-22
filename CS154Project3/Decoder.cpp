@@ -9,6 +9,7 @@
 //
 
 #include <iostream>
+#include <stdio.h>
 #include <assert.h>
 #include "Decoder.h"
 

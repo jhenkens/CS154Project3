@@ -89,8 +89,8 @@ $6:  0       $14: 0       $22: 0       $30: 0
 $7:  0       $15: 0       $23: 0       $31: 0       
 
 Cycle 6:
-Fetch instruction: bge $11, $10, 1
-Decode instruction: 
+Fetch instruction: jal 4
+Decode instruction: bge $11, $10, 1
 Execute instruction: addi $11, $11, 1
 Memory instruction: addi $11, $0, 0
 WriteBack instruction: addi $10, $10, 2
@@ -149,8 +149,8 @@ $6:  0       $14: 0       $22: 0       $30: 0
 $7:  0       $15: 0       $23: 0       $31: 0       
 
 Cycle 10:
-Fetch instruction: bge $11, $10, 1
-Decode instruction: 
+Fetch instruction: jal 4
+Decode instruction: bge $11, $10, 1
 Execute instruction: addi $11, $11, 1
 Memory instruction: jal 4
 WriteBack instruction: bge $11, $10, 1
@@ -209,8 +209,8 @@ $6:  0       $14: 0       $22: 0       $30: 0
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 14:
-Fetch instruction: bge $11, $10, 1
-Decode instruction: 
+Fetch instruction: jal 4
+Decode instruction: bge $11, $10, 1
 Execute instruction: addi $11, $11, 1
 Memory instruction: jal 4
 WriteBack instruction: bge $11, $10, 1
@@ -329,8 +329,8 @@ $6:  0       $14: 0       $22: 0       $30: 0
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 22:
-Fetch instruction: bge $11, $10, 1
-Decode instruction: 
+Fetch instruction: bne $12, $10, -6
+Decode instruction: bge $11, $10, 1
 Execute instruction: addi $11, $11, 1
 Memory instruction: addi $11, $0, 0
 WriteBack instruction: addi $10, $10, 2
@@ -404,8 +404,8 @@ $6:  0       $14: 0       $22: 0       $30: 0
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 27:
-Fetch instruction: bge $11, $10, 1
-Decode instruction: 
+Fetch instruction: bne $12, $10, -6
+Decode instruction: bge $11, $10, 1
 Execute instruction: addi $11, $11, 1
 Memory instruction: jal 4
 WriteBack instruction: 
@@ -479,8 +479,8 @@ $6:  0       $14: 0       $22: 0       $30: 0
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 32:
-Fetch instruction: bge $11, $10, 1
-Decode instruction: 
+Fetch instruction: jal 4
+Decode instruction: bge $11, $10, 1
 Execute instruction: addi $11, $11, 1
 Memory instruction: jal 4
 WriteBack instruction: 
@@ -539,8 +539,8 @@ $6:  0       $14: 0       $22: 0       $30: 0
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 36:
-Fetch instruction: bge $11, $10, 1
-Decode instruction: 
+Fetch instruction: jal 4
+Decode instruction: bge $11, $10, 1
 Execute instruction: addi $11, $11, 1
 Memory instruction: jal 4
 WriteBack instruction: bge $11, $10, 1
@@ -599,8 +599,8 @@ $6:  0       $14: 0       $22: 0       $30: 0
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 40:
-Fetch instruction: bge $11, $10, 1
-Decode instruction: 
+Fetch instruction: jal 4
+Decode instruction: bge $11, $10, 1
 Execute instruction: addi $11, $11, 1
 Memory instruction: jal 4
 WriteBack instruction: bge $11, $10, 1
@@ -839,7 +839,7 @@ $6:  0       $14: 22      $22: 0       $30: 28
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 56:
-Fetch instruction: add $20, $0, $19
+Fetch instruction: bne $19, $0, 1
 Decode instruction: lw $19, $10, 0
 Execute instruction: sw $11, $10, 0
 Memory instruction: addi $10, $0, 8
@@ -854,8 +854,8 @@ $6:  0       $14: 22      $22: 0       $30: 28
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 57:
-Fetch instruction: 
-Decode instruction: add $20, $0, $19
+Fetch instruction: add $21, $0, $19
+Decode instruction: bne $19, $0, 1
 Execute instruction: lw $19, $10, 0
 Memory instruction: sw $11, $10, 0
 WriteBack instruction: addi $10, $0, 8
@@ -869,8 +869,8 @@ $6:  0       $14: 22      $22: 0       $30: 28
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 58:
-Fetch instruction: 
-Decode instruction: add $20, $0, $19
+Fetch instruction: add $21, $0, $19
+Decode instruction: bne $19, $0, 1
 Execute instruction: 
 Memory instruction: lw $19, $10, 0
 WriteBack instruction: sw $11, $10, 0
@@ -884,9 +884,9 @@ $6:  0       $14: 22      $22: 0       $30: 28
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 59:
-Fetch instruction: 
-Decode instruction: 
-Execute instruction: add $20, $0, $19
+Fetch instruction: add $21, $0, $19
+Decode instruction: bne $19, $0, 1
+Execute instruction: 
 Memory instruction: 
 WriteBack instruction: lw $19, $10, 0
 $0:  0       $8:  0       $16: 0       $24: 0       
@@ -899,6 +899,51 @@ $6:  0       $14: 22      $22: 0       $30: 28
 $7:  0       $15: 0       $23: 0       $31: 28      
 
 Cycle 60:
+Fetch instruction: add $20, $0, $19
+Decode instruction: 
+Execute instruction: bne $19, $0, 1
+Memory instruction: 
+WriteBack instruction: 
+$0:  0       $8:  0       $16: 0       $24: 0       
+$1:  0       $9:  0       $17: -10     $25: 0       
+$2:  0       $10: 8       $18: 10      $26: 0       
+$3:  0       $11: 25      $19: 25      $27: 0       
+$4:  0       $12: 1       $20: 0       $28: 0       
+$5:  0       $13: 40      $21: 0       $29: 0       
+$6:  0       $14: 22      $22: 0       $30: 28      
+$7:  0       $15: 0       $23: 0       $31: 28      
+
+Cycle 61:
+Fetch instruction: 
+Decode instruction: add $20, $0, $19
+Execute instruction: 
+Memory instruction: bne $19, $0, 1
+WriteBack instruction: 
+$0:  0       $8:  0       $16: 0       $24: 0       
+$1:  0       $9:  0       $17: -10     $25: 0       
+$2:  0       $10: 8       $18: 10      $26: 0       
+$3:  0       $11: 25      $19: 25      $27: 0       
+$4:  0       $12: 1       $20: 0       $28: 0       
+$5:  0       $13: 40      $21: 0       $29: 0       
+$6:  0       $14: 22      $22: 0       $30: 28      
+$7:  0       $15: 0       $23: 0       $31: 28      
+
+Cycle 62:
+Fetch instruction: 
+Decode instruction: 
+Execute instruction: add $20, $0, $19
+Memory instruction: 
+WriteBack instruction: bne $19, $0, 1
+$0:  0       $8:  0       $16: 0       $24: 0       
+$1:  0       $9:  0       $17: -10     $25: 0       
+$2:  0       $10: 8       $18: 10      $26: 0       
+$3:  0       $11: 25      $19: 25      $27: 0       
+$4:  0       $12: 1       $20: 0       $28: 0       
+$5:  0       $13: 40      $21: 0       $29: 0       
+$6:  0       $14: 22      $22: 0       $30: 28      
+$7:  0       $15: 0       $23: 0       $31: 28      
+
+Cycle 63:
 Fetch instruction: 
 Decode instruction: 
 Execute instruction: 
@@ -913,7 +958,7 @@ $5:  0       $13: 40      $21: 0       $29: 0
 $6:  0       $14: 22      $22: 0       $30: 28      
 $7:  0       $15: 0       $23: 0       $31: 28      
 
-Cycle 61:
+Cycle 64:
 Fetch instruction: 
 Decode instruction: 
 Execute instruction: 
@@ -928,5 +973,5 @@ $5:  0       $13: 40      $21: 0       $29: 0
 $6:  0       $14: 22      $22: 0       $30: 28      
 $7:  0       $15: 0       $23: 0       $31: 28      
 
-Cycles: 62
-Instructions executed: 44
+Cycles: 65
+Instructions executed: 45

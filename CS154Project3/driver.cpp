@@ -93,22 +93,7 @@ int main(int argc, char * argv[])
             prevMem = memoried;
             //Update PC to whatever we didn't go to.
             instMem->updatePC(decoded);
-        } else if(instr!=0 && instr->stall){
-            //Delete the new stuff
-            delete instr;
-            instr=0;
-            //insert the noop
-            delete prevInstruction;
-            prevInstruction=0;
-            //handle as normal, minus the PC updating
-            delete prevDecode;
-            prevDecode = decoded;
-            delete prevExecute;
-            prevExecute=execute;
-            
-            delete prevMem;
-            prevMem=memoried;
-        }else{
+        } else{
 //            //Normal case:
             delete prevInstruction;
             prevInstruction=instr;

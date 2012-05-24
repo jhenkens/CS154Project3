@@ -20,7 +20,7 @@ addi $10, $0, 8
 sw $11, 0($10)
 lw $19, 0($10)
 addi $1, $0, 0
-addi $2, $0, 2
+addi $2, $0, 3
 prefinalloop: addi $1, $1, 1
 addi $3, $0, 0
 bne $1, $2, prefinalloop

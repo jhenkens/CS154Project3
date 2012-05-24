@@ -1,0 +1,4 @@
+all:
+	g++ src/Decoder.cpp src/Decoded.cpp src/Execute.cpp src/Executed.cpp src/Fetch.cpp src/Fetched.cpp src/Memoried.cpp src/WriteBack.cpp src/driver.cpp src/Memory.cpp -o cs154project3 -Wall
+clean:
+	rm -f cs154project3

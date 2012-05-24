@@ -1,0 +1,43 @@
+Pipelining motivation:
+
+Although a single-cycle implementation of MIPS works correctly, it is
+inefficient. The clock cycle must be the same length for each instruction,
+which means that faster instructions must wait for the entire clock cycle.
+This makes the overall performance poor because the clock cycle is much 
+longer than needed by the majority of instructions. In addition, each 
+instruction doesn't use every part of the chip at once, which means that 
+there are always parts of the chip that aren't performing any work.
+
+We need a way to split up the work so that components could be working on 
+different parts of different instructions. For example, once the current 
+instruction is fetched from instruction memory, we could fetch the next 
+instruction while the current instruction is being processed. Once the 
+current instruction completes, we'd already have part of the next 
+instruction done. If we also found a way to reduce the clock cycle so it 
+better fits all of the instructions, the combination of these two features 
+would make the performance much better even without improving instruction 
+latency.
+
+Industrial manufactures have long ago solved this problem by installing 
+assembly lines. Rather than letting workers go idle, each worker performs 
+his or her individual task repeatedly on different objects. Once a worker 
+is finished with an object, he or she will pass it on to the next worker, 
+who will complete the next step. This same technique could be implemented 
+in the MIPS chip. Pipelining contains many of the same features of the 
+manufacturing assembly line. Rather than reserving the entire data and 
+control paths for a single instruction, the paths are broken up into self 
+contained blocks. Each block can perform a unique task and then pass its 
+data on to the next block. Pipelining reduces the amount of structures on 
+the chip that are busy-waiting at any moment in time, and allows us to form 
+a new method for determining the clock cycle. Rather than setting the clock 
+cycle to be the longest amount of time taken by an instruction, we can set 
+the clock cycle to be the longest amount of time taken by one block on the 
+pipeline. This shortens the wait time between instructions, which improves 
+the overall performance.
+
+
+
+
+
+
+

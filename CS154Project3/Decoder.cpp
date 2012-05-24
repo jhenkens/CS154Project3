@@ -54,7 +54,7 @@ Decoded* RegFile::performDecode(Fetched *fetched, Decoded *prevDecode, Executed*
     result->readReg1=getRegister(result->rs);
     result->readReg2=getRegister(result->rt);
     result->stall=false;
-    
+        
     //Handle branch stall
     if(result->branch){   
         if((prevDecode!=0 && prevDecode->regWr) && 

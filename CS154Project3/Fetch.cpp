@@ -38,11 +38,24 @@ Fetch::Fetch(char* filename){
     pc = 0;
     branchPredictor=false;
     prevBranchResults=false;
+    branchValid = false;
 }
 
 void Fetch::updatePC(Fetched* fetched){
     if(fetched!=0 && fetched->branch){
-        pc=getPCPlus4()+fetched->getPredictedOffset();
+        //If predictor is true, jump to last branch taken destination
+        //Otherwise, jump to PC+4
+        if(branchPredictor){
+#ifdef DEBUG
+            std::cout<<"Predicting taken!"<<std::endl;
+#endif
+            pc=branchPredDest;
+        } else{
+#ifdef DEBUG
+            std::cout<<"Predicting not taken!"<<std::endl;
+#endif
+            pc=getPCPlus4();
+        }
     } else if(fetched!=0 && fetched->bType==1){
         pc=((fetched->jumpAddr)<<2);
     } else{
@@ -54,9 +67,14 @@ void Fetch::updatePC(Decoded* dec){
     pc=dec->getProperBranchPC();
 }
 
-void Fetch::updateBranchPredictor(bool branchResults){
-    if(branchResults==prevBranchResults) branchPredictor=branchResults;
-    prevBranchResults=branchResults;
+void Fetch::updateBranchPredictor(Decoded* decoded){
+    if(decoded!=0 && !decoded->stall && decoded->branch){
+        //update predictor
+        if(decoded->branchResult==prevBranchResults) branchPredictor=decoded->branchResult;
+        prevBranchResults=decoded->branchResult;
+        
+        if(decoded->branchResult) branchPredDest=decoded->getProperBranchPC();
+    }
 }
 
 int Fetch::nextInstruction(){

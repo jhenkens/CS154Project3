@@ -22,6 +22,8 @@ class Fetch{
     unsigned int branchPredFailedPC;
     bool prevBranchResults;
     bool branchPredictor;
+    unsigned int branchPredDest;
+    bool branchValid;
 public:
     Fetch(char*);
     int nextInstruction();
@@ -32,8 +34,6 @@ public:
     void updatePC(Decoded*);
     Fetched* performFetch();
     bool isDone();
-    void updateBranchPredictor(bool branchResults);
+    void updateBranchPredictor(Decoded* decoded);
 };
-
-
 #endif

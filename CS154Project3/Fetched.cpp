@@ -132,24 +132,7 @@ Fetched::Fetched(int inst, unsigned int currPC){
     printString=ss.str();
 }
 
-void Fetched::setIfStalls(Fetched *prevFetch, Fetched *prevDecode){
-    
-}
-
 Fetched::~Fetched(){
     
 }
 
-unsigned int Fetched::getPredictedOffset(){
-    if(branch && branchPredictorWhenMade){
-#ifdef DEBUG
-        std::cerr<<"Predicting taken!"<<std::endl;
-#endif
-        return immi<<2;
-    } else{
-#ifdef DEBUG
-        std::cerr<<"Predicting not taken!"<<std::endl;
-#endif
-        return 0;
-    }
-}

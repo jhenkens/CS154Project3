@@ -44,12 +44,11 @@ int main(int argc, char * argv[])
         
         cout<<"Cycle "<<i<<":"<<endl;
         Fetched* instr = instMem->performFetch();
-        if(instr!=0)instr->setIfStalls(prevInstruction, prevDecode);
         
         string wbRes = WriteBack::performWriteBack(reg, prevMem,iE);
         
         Decoded* decoded = reg->performDecode(prevInstruction, prevDecode, prevExecute);
-        if(decoded!=0 && !decoded->stall&& decoded->branch) instMem->updateBranchPredictor(decoded->branchResult);
+        instMem->updateBranchPredictor(decoded);
         
         Executed* execute = Execute::performExecute(prevDecode,prevExecute,prevMem);
         
@@ -74,7 +73,7 @@ int main(int argc, char * argv[])
             
             delete prevMem;
             prevMem=memoried;
-        }else if(decoded!=0 && (decoded->branch) && (decoded->branchPredictorWhenMade!=decoded->branchResult)){
+        }else if(decoded!=0 && (decoded->branch) && (instMem->getPC()!=decoded->getProperBranchPC())){
 #ifdef DEBUG
             cerr<<"I predicted wrong!"<<endl;
 #endif

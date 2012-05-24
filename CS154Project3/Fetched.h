@@ -48,9 +48,6 @@ struct Fetched{
     bool branchPredictorWhenMade;
     
     ~Fetched();
-    
-    unsigned int getPredictedOffset();
-    void setIfStalls(Fetched* prevFetch, Fetched* prevDecode);
 };
 
 

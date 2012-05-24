@@ -37,7 +37,6 @@ Decoded::Decoded(Fetched* fetched){
     this->branch=fetched->branch;
 }
 
-// TO DO: Remove!
 unsigned int Decoded::getProperBranchPC(){
     unsigned int result = PC+4;
     if(branchResult) result+=(immi<<2);

@@ -115,8 +115,6 @@ int main(int argc, char * argv[])
     return 0;
 }
 
-//bool branchALU(Decoded* branch, Executed* p
-
 bool shouldContinue(Fetch* instMem, Fetched* instr,Decoded* dec, Executed* exec, Memoried* mem){
     bool done = instMem->isDone();
     return ((!done)||(instr!=0)||(dec!=0)||(exec!=0)||(mem!=0));

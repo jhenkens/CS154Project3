@@ -21,4 +21,13 @@ sw $11, 0($10)
 lw $19, 0($10)
 bne $19, $0, trueend
 add $21, $0, $19
+addi $1, $0, 0
+addi $2, $0, 2
+prefinalloop: addi $1, $1, 1
+addi $3, $0, 0
+bne $1, $2, prefinalloop
+addi $2, $0, 5
+finalloop: addi $1, $1, 1
+addi $3, $0, 0
+bne $1, $2, finalloop
 trueend: add $20, $0, $19

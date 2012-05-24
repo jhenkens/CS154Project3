@@ -20,14 +20,15 @@ addi $10, $0, 8
 sw $11, 0($10)
 lw $19, 0($10)
 addi $1, $0, 0
-addi $2, $0, 3
+addi $5, $0, 3
 prefinalloop: addi $1, $1, 1
-addi $3, $0, 0
-bne $1, $2, prefinalloop
-addi $2, $0, 5
-finalloop: addi $1, $1, 1
-addi $3, $0, 0
-bne $1, $2, finalloop
+addi $7, $0, 0
+bne $1, $5, prefinalloop
+addi $2, $0, 0
+addi $5, $0, 5
+finalloop: addi $2, $2, 1
+addi $7, $0, 0
+bne $2, $5, finalloop
 bne $19, $0, trueend
 add $21, $0, $19
 trueend: add $20, $0, $19

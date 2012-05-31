@@ -118,12 +118,13 @@ Fetched::Fetched(int inst, unsigned int currPC){
             break;
         case 'I':
             ss<<instructionName<<" $";
-            if(branch){
-                ss<<((short)rs)<<", $"<<((short)rt);
+            if(memRd||memWr){
+                ss<<((short)rt)<<", "<<immi<<" ("<<((short)rs);
+            } else if(branch){
+                ss<<((short)rs)<<", $"<<((short)rt)<<", "<<immi;
             } else{
-                ss<<((short)rt)<<", $"<<((short)rs);
+                ss<<((short)rt)<<", $"<<((short)rs)<<", "<<immi;
             }
-            ss<<", "<<immi;
             break;
         case 'R':
             ss<<instructionName<<" $"<<((short)rd)<<", $"<<((short)rs)<<", $"<<((short)rt);

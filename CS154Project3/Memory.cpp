@@ -49,7 +49,7 @@ Memoried* Memory::performMemory(Executed* exec,Memoried* prevMem){
     Memoried* mem = new Memoried(exec);
     std::cout<<"Memory instruction: "<<mem->printString<<std::endl;
 
-    if(mem->memWr && (prevMem->memRd) && (mem->rt==prevMem->writeReg)){
+    if(mem->memWr && (prevMem!=0) && (prevMem->memRd) && (mem->rt==prevMem->writeReg)){
         mem->readReg2=prevMem->memRead;
     }
     mem->memRead=getMemoryOutput(mem);
